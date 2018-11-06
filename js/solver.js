@@ -13,6 +13,8 @@ for(i = 0; i < 6; i++)
   faces.push(temp);
 }
 
+//For testing purposes: for(i = 0; i < 6; i++) {faces[i][8] = i + 1;}
+
 //Commands for rotating cube
 
 //--> Use for reference: https://rubiks-cu.be/
