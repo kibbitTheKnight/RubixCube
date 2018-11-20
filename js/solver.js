@@ -314,6 +314,16 @@ function lcc(cube)
 		}
 	}
 }
+//Front Clockwise
+function fcw(cube)
+{
+	
+}
+//Front Counterclockwise
+function fcc(cube)
+{
+	
+}
 //Back Clockwise
 function bcw(cube)
 {
