@@ -7,11 +7,14 @@
 
 //create cube with faces
 var cube = [];
+//for each face
 for(f = 0; f < 6; f++)
 {
+	//go through each row
 	var faces = [];
 	for(i = 0; i < 3; i++)
 	{
+	//fill each spot with the number representing which face it is
 	let temp = Array(3).fill(f);
 	faces.push(temp);
 	}
