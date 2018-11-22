@@ -46,11 +46,7 @@ function rcw(cube)
 	//with white up and green face
 	
 	//sides affected
-	/*side 0 = white, side 1 = green, side 2 = yellow, side 3 = red, 
-	 ? but arnt there 4 sides? 
-	 or are these the only sides being affected -> yes
-		?are we saying that each side has only a single color? -> no
-	*/
+
 	sides[0] = 0; sides[1] = 2; sides[2] = 5; sides[3] = 4;
 	
 	//create copy of cube so it can be modified
@@ -86,14 +82,10 @@ function rcw(cube)
 	tempFaces = copyArray(cube);
 	
 	//rotate face clockwise, moving all cubes in clockwise a circle
-	//is this cube[side][row][col]?
-	//why do we need to do this?
-	//we are updating the side of the cube (side 3)
 	for(i = 0; i < 3; i++)
 	{
 		for(j = 0; j < 3; j++)
 		{
-			//why [2-j][i]?
 			cube[3][i][j] = tempFaces[3][2 - j][i];
 		}
 	}
@@ -466,8 +458,7 @@ function fcc(cube)
 	}
 	
 }
-//Back Clockwise
-//need to fix the edges but the face rotation is fine (i hope)
+//Back Clockwise -- not tested
 function bcw(cube)
 {
 	//the order we will be looking at the sides 
