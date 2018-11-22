@@ -49,7 +49,7 @@ function rcw(cube)
 	/*side 0 = white, side 1 = green, side 2 = yellow, side 3 = red, 
 	 ? but arnt there 4 sides? 
 	 or are these the only sides being affected -> yes
-		?are we saying that each side has only a single color? ->
+		?are we saying that each side has only a single color? -> no
 	*/
 	sides[0] = 0; sides[1] = 2; sides[2] = 5; sides[3] = 4;
 	
@@ -333,14 +333,17 @@ function lcc(cube)
 		}
 	}
 }
-//Front Clockwise
+//Front Clockwise -- not tested
 //bro this took me so long to plan out it better work the 1st time we test this
 function fcw(cube)
 {
 	//the order we will be looking at the sides 
 	//left, top, right, bottom
 	side[0]=1; side[1]=0; side[2]=3; side[3]=5;
+	
+	//create copy of cube so it can be modified
 	var temp = copyArray(cube);
+	
 	//rotating the edges
 	for ( i=0; i<4; i++) {
 		
@@ -385,29 +388,82 @@ function fcw(cube)
 				}
 			
 			}
-				//create copy of cube so it can be modified
-			tempFaces = copyArray(cube);
-			//front face rotation
-			for (i=0;i<3;i++) {
-				
-				//base stays the same to help us determine what row
-				//the mini square on the face goes to
-				base=2;
-				for (j=0;j<3;j++){
-					//front face is represented by the number 2
-					//cube[side][row][col]
-					cube[2][i][j]=tempFaces[2][base-j][j];
-				}
-			}
+			
 			
 		}
+		
 	}
 	
-	
+	//create copy of cube so it can be modified
+		tempFaces = copyArray(cube);
+		//front face rotation clockwise
+		for (i=0;i<3;i++) {
+			
+			//base stays the same to help us determine what row
+			//the mini square on the face goes to
+			base=2;
+			for (j=0;j<3;j++){
+				//front face is represented by the number 2
+				//cube[side][row][col]
+				cube[2][i][j]=tempFaces[2][base-j][j];
+			}
+		}
 }
-//Front Counterclockwise
+//Front Counterclockwise -- not tested
 function fcc(cube)
 {
+	//the order we will be looking at the sides 
+	//left, top, right, bottom, front
+	side[0]=1; side[1]=0; side[2]=3; side[3]=5; side[4]=2;
+	
+	//create copy of cube so it can be modified
+	var temp = copyArray(cube);
+	
+	//rotate the edges
+	(i=0;i<4;i++){
+		
+		if(i==0) {
+			
+			//base stays the same 
+			//helps us detemine which row to put the mini square in
+			base=2;
+			for (j=0;j<3;j++) {
+				
+				//bottom <- left
+				cube[3][base-j][0]=temp[0][j][2];
+			}
+		}
+		if(i==1){
+			for(j=0;j<3;j++){
+				//right <- bottom
+				cube[2][j][0]=temp[3][j][0];
+			}
+		}
+		if(i==2) {
+			base =2;
+			for(j=0;j<3;j++){
+				//top <- right
+				cube[1][base-j][2]=temp[2][j][0];
+			}
+		}
+		if(i==3) {
+			for(j=0;j<3;j++){
+				//left <-top
+				cube[0][j][2]=temp[1][j][2];
+			}
+		}
+		
+	}
+	//create copy of cube so it can be modified
+	tempFaces = copyArray(cube);
+	//front face rotating counterclockwise
+	for (i=0;i<3;i++){
+		add=2;
+		for (j=0;j<3;j++) {
+			cube[side[4]][j][i]=tempFaces[side[4]][j][i+add];
+			add--;
+		}
+	}
 	
 }
 //Back Clockwise
