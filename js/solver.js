@@ -560,7 +560,7 @@ function bcc(cube)
 			}
 		}	
 	}
-	//rotating the face clockwise
+	//rotating the face counterclockwise
 	//create copy of cube so it can be modified
 	tempFaces = copyArray(cube);
 	for (i=0;i<3;i++){
