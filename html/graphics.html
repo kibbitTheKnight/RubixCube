@@ -34,15 +34,6 @@
 			let geometry = new THREE.BoxGeometry( 1, 1, 1 );
 			let material = new THREE.MeshNormalMaterial( { color: 0xFFFFFF, wireframe: false } );
 			
-			/*var sides = []
-			var cube = [];
-			for(i = 0; i < 3; i++)
-			{
-				cube[i] = new THREE.Mesh(new THREE.BoxGeometry( 1, 1, 1 ),
-						new THREE.MeshLambertMaterial( { color: 0x22FF22, wireframe: true } ));
-			}
-			//let cube = new THREE.Mesh( geometry, material );
-			*/
 			//create cube with faces
 			var cube = [];
 			//for each face
@@ -52,7 +43,7 @@
 				var faces = [];
 				for(i = 0; i < 3; i++)
 				{
-				//fill each spot with the number representing which face it is
+				//fill each spot with a cube object
 				let temp = Array(3).fill(new THREE.Mesh(new THREE.BoxGeometry( 1, 1, 1 ),
 						new THREE.MeshLambertMaterial( { color: 0x22FF22, wireframe: true } )));
 				faces.push(temp);
@@ -60,11 +51,13 @@
 				cube.push(faces);
 			}
 						
-			//create pivot points
+			//create pivot points (point around which the face turns)
 			var pivot = new THREE.Object3D();
+			//center the pivot point
 			pivot.position.x = -1;
 			pivot.position.y = -1;
 			pivot.position.z = -1;
+			//position all of the cubes
 			for(i = 0; i < 3; i++)
 			{
 				for(j = 0; j < 3; j++)
@@ -74,13 +67,13 @@
 						cube[k][i][j].position.x = (i);
 						cube[k][i][j].position.y = j;
 						cube[k][i][j].position.z = (k);
+						//add each cube to the pivot point
 						pivot.add(cube[k][i][j]);
 					}
 				}
 			}
-			
+			//add pivot point to the scene
 			scene.add( pivot );
-			
 			
 			//animation function
 			let render = function () 
