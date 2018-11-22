@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<title>Final Project: Rubix Cube Solver</title>
+	<script  src="https://threejs.org/build/three.js"></script>
+	<script  src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+	<script>
+		function mainFunction()
+		{
+			//create renderer
+			let renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight);
+			document.body.appendChild( renderer.domElement);
+			
+			//create scene and camera
+			let scene = new THREE.Scene();
+			let aspect = window.innerWidth/window.innerHeight;
+			let camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 100 );
+			camera.position.z= 5;
+			scene.add(camera);
+			
+			//lights
+			let keyLight = new THREE.DirectionalLight(0xFFBF80, 1.0);
+			keyLight.position.set(-1, 0.5, 1);
+			let fillLight = new THREE.DirectionalLight(0x8080FF, 1.5);
+			fillLight.position.set(1, 0, 1);
+			let backLight = new THREE.DirectionalLight(0xffffff, 0.5);
+			backLight.position.set(1, -0.5, -1).normalize();
+			scene.add(keyLight);
+			scene.add(fillLight);
+			scene.add(backLight);
+			
+			//create cubes
+			let geometry = new THREE.BoxGeometry( 1, 1, 1 );
+			let material = new THREE.MeshNormalMaterial( { color: 0xFFFFFF, wireframe: false } );
+			
+			/*var sides = []
+			var cube = [];
+			for(i = 0; i < 3; i++)
+			{
+				cube[i] = new THREE.Mesh(new THREE.BoxGeometry( 1, 1, 1 ),
+						new THREE.MeshLambertMaterial( { color: 0x22FF22, wireframe: true } ));
+			}
+			//let cube = new THREE.Mesh( geometry, material );
+			*/
+			//create cube with faces
+			var cube = [];
+			//for each face
+			for(f = 0; f < 6; f++)
+			{
+				//go through each row
+				var faces = [];
+				for(i = 0; i < 3; i++)
+				{
+				//fill each spot with the number representing which face it is
+				let temp = Array(3).fill(new THREE.Mesh(new THREE.BoxGeometry( 1, 1, 1 ),
+						new THREE.MeshLambertMaterial( { color: 0x22FF22, wireframe: true } )));
+				faces.push(temp);
+				}
+				cube.push(faces);
+			}
+						
+			//create pivot points
+			var pivot = new THREE.Object3D();
+			pivot.position.x = -1;
+			pivot.position.y = -1;
+			pivot.position.z = -1;
+			for(i = 0; i < 3; i++)
+			{
+				for(j = 0; j < 3; j++)
+				{
+					for(k = 0; k < 3; k++)
+					{
+						cube[k][i][j].position.x = (i);
+						cube[k][i][j].position.y = j;
+						cube[k][i][j].position.z = (k);
+						pivot.add(cube[k][i][j]);
+					}
+				}
+			}
+			
+			scene.add( pivot );
+			
+			
+			//animation function
+			let render = function () 
+			{
+				renderer.render( scene, camera );
+			};
+				
+			//controls
+			let cameraControl= new THREE.OrbitControls( camera );
+			cameraControl.addEventListener( 'change', render );
+			render();
+		}
+		</script>
+	</head>
+	<body onload="mainFunction();">
+		<h1 style="font-family:verdana;"> Keira Taylor and Ashley Smith</h1>
+	</body>
+</html>
