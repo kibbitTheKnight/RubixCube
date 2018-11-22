@@ -414,7 +414,7 @@ function fcc(cube)
 {
 	//the order we will be looking at the sides 
 	//left, top, right, bottom, front
-	side[0]=1; side[1]=0; side[2]=3; side[3]=5; side[4]=2;
+	side[0]=1; side[1]=0; side[2]=3; side[3]=5; side[4]=4;
 	
 	//create copy of cube so it can be modified
 	var temp = copyArray(cube);
@@ -467,14 +467,109 @@ function fcc(cube)
 	
 }
 //Back Clockwise
+//need to fix the edges but the face rotation is fine (i hope)
 function bcw(cube)
 {
+	//the order we will be looking at the sides 
+	//left, top, right, bottom, front
+	side[0]=1; side[1]=0; side[2]=3; side[3]=5; side[4]=4;
 	
+	//create copy of cube so it can be modified
+	var temp = copyArray(cube);
+	
+	//rotating the edges
+	for(i=0;i<4;i++){
+		
+		if(i==0) {
+			base=2;
+			for (j=0;j<3;j++){
+				//left <- bot
+				cube[side[0]][base-j][0]=temp[side[1]][j][2];
+			}
+		}
+		
+		if(i==1)
+			for (j=0;j<3;j++) {
+				//top <- left
+				cube[side[1]][j][0]=temp[side[0]][j][0];
+			}
+			
+		if(i==2)
+			base=2;
+			for(j=0;j<3;j++) {
+				//right <- top
+				cube[side[1]][base-j][2]=temp[side[1]][j][0];
+			}
+			
+		if (i==3) {
+			for (j=0;j<3;j++) {
+				//bot <-right
+				cube[side[3]][j][2]=temp[side[2]][j][2];
+			}
+		}
+		
+	}
+	//rotating the face clockwise
+	//create copy of cube so it can be modified
+	tempFaces = copyArray(cube);
+	for (i=0;i<3;i++){
+		add=2;
+		for (j=0;j<3;j++) {
+			cube[side[4]][j][i]=tempFaces[side[4]][j][i+add];
+			
+		}
+		add--;
+	}
 }
-//Back Counterclockwise
+//Back Counterclockwise -- not tested
 function bcc(cube)
 {
+	//left, top, right, bot, back
+	sides[0] = 1; sides[1] = 0; sides[2] = 3; sides[3] = 5; sides[3] = 4;
 	
+	//create copy of cube so it can be modified
+	var temp = copyArray(cube);
+	//rotating the edges
+	for(i=0;i<4;i++){
+		
+		if(i==0) {
+			for (j=0;j<3;j++){
+				//left <- top
+				cube[side[0]][j][0]=temp[side[1]][j][0];
+			}
+		}
+		
+		if(i==1)
+			base=2;
+			for (j=0;j<3;j++) {
+				//top <- right
+				cube[side[1]][base-j][0]=temp[side[2]][j][2];
+			}
+			
+		if(i==2)
+			for(j=0;j<3; j++) {
+				//right <-bot
+				cube[side[2]][j][2]=temp[side[3]][j][2];
+			}
+			
+		if (i==3) {
+			base=2;
+			for (j=0;j<3;j++) {
+				//bot <-left
+				cube[side[3]][base-j][2]=temp[side[1]][j][0];
+			}
+		}	
+	}
+	//rotating the face clockwise
+	//create copy of cube so it can be modified
+	tempFaces = copyArray(cube);
+	for (i=0;i<3;i++){
+		add=2;
+		for (j=0;j<3;j++) {
+			cube[side[4]][i][j]=tempFaces[side[4]][j+add][i];
+		}
+		add--;
+	}
 }
 
 //helper functions
