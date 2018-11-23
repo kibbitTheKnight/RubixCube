@@ -5,32 +5,79 @@
 	<script  src="https://threejs.org/build/three.js"></script>
 	<script  src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
 	<script>
+		function createCubes(scene, materials) 
+		{
+			var cubes = [];
+			var edges = [];
+			for (var x = 0; x < 3; x++) 
+			{
+				for (var y = 0; y < 3; y++) 
+				{
+					for (var z = 0; z < 3; z++) 
+					{
+						var faceMaterial = new THREE.MeshFaceMaterial(materials);
+						var cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+						var cube = new THREE.Mesh(cubeGeometry, faceMaterial);
+						
+						var position = 1.05;
+						
+						cube.position.x = (x - 1) * position;
+						cube.position.y = (y - 1) * position;
+						cube.position.z = (z - 1) * position;
+						
+						var edge = new THREE.EdgesGeometry( cubeGeometry );
+						var line = new THREE.LineSegments( edge, new THREE.LineBasicMaterial( { color: 0x000000, linewidth: 1 } ) );
+						line.position.x = (x - 1) * position;
+						line.position.y = (y - 1) * position;
+						line.position.z = (z - 1) * position;
+						
+						cubes.push(cube);
+						edges.push(line);
+					}
+				}
+			}
+			
+			for(i = 0; i < cubes.length; i++)
+			{
+				scene.add(cubes[i]);
+				scene.add(edges[i]);
+			}
+			
+			return cubes;
+		}
+	</script>
+	
+	<script>
 		function mainFunction()
 		{
 			//create renderer
 			let renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight);
 			document.body.appendChild( renderer.domElement);
+			renderer.setClearColor (0x8dc8e0, 1);
 			
 			//create scene and camera
 			let scene = new THREE.Scene();
 			let aspect = window.innerWidth/window.innerHeight;
 			let camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 100 );
-			camera.position.z= 5;
+			camera.position.z= 6;
 			scene.add(camera);
 			
 			//lights
 			let keyLight = new THREE.DirectionalLight(0xFFBF80, 1.0);
-			keyLight.position.set(-1, 0.5, 1);
+			keyLight.position.set(-0.5, 0.5, 1);
 			let fillLight = new THREE.DirectionalLight(0x8080FF, 1.5);
 			fillLight.position.set(1, 0, 1);
 			let backLight = new THREE.DirectionalLight(0xffffff, 0.5);
-			backLight.position.set(1, -0.5, -1).normalize();
+			backLight.position.set(0.5, -0.5, -1).normalize();
+			var ambientLight = new THREE.AmbientLight( 0x404040 );
 			scene.add(keyLight);
 			scene.add(fillLight);
 			scene.add(backLight);
+			scene.add(ambientLight);
 			
 			//create cubes
+			/*
 			let geometry = new THREE.BoxGeometry( 1, 1, 1 );
 			let material = new THREE.MeshNormalMaterial( { color: 0xFFFFFF, wireframe: false } );
 			
@@ -67,13 +114,26 @@
 						cube[k][i][j].position.x = (i);
 						cube[k][i][j].position.y = j;
 						cube[k][i][j].position.z = (k);
+						cube[k][i][j].rotation.x = Math.PI * (i + j);
+						cube[k][i][j].rotation.y = Math.PI * i;
+						cube[k][i][j].rotation.z = Math.PI * i;
 						//add each cube to the pivot point
 						pivot.add(cube[k][i][j]);
 					}
 				}
 			}
 			//add pivot point to the scene
-			scene.add( pivot );
+			scene.add( pivot );*/
+			var materials = 
+			[
+				new THREE.MeshBasicMaterial({color: 0xff7800}), // orange
+				new THREE.MeshBasicMaterial({color: 0xd92b2c}), // red
+				new THREE.MeshBasicMaterial({color: 0xffffff}), // white
+				new THREE.MeshBasicMaterial({color: 0xe6e621}), // yellow
+				new THREE.MeshBasicMaterial({color: 0x2f55cf}), // blue
+				new THREE.MeshBasicMaterial({color: 0x26b143}), // green
+			];
+			var cube = createCubes(scene, materials);
 			
 			//animation function
 			let render = function () 
