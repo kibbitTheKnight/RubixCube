@@ -563,6 +563,103 @@ function bcc(cube)
 	}
 }
 
+//solving
+
+//solving white face
+function whiteFacingDown(cube)
+{
+	fcw(cube);
+	fcw(cube);
+}
+function whiteAtBottom(cube)
+{
+	dcw(cube);
+	rcw(cube);
+	fcc(cube);
+	rcc(cube);
+}
+function whiteStuck(cube)
+{
+	lcw(cube);
+	dcw(cube);
+	lcc(cube);
+}
+
+function finishFace(cube)
+{
+	rcc(cube);
+	dcc(cube);
+	rcw(cube);
+	dcw(cube);
+}
+
+//solving center layer
+function leftCenter(cube)
+{
+	ucc(cube);
+	lcc(cube);
+	ucw(cube);
+	lcw(cube);
+	ucw(cube);
+	fcw(cube);
+	ucc(cube);
+	fcc(cube);
+}
+
+function leftCenter(cube)
+{
+	ucw(cube);
+	rcw(cube);
+	ucc(cube);
+	rcc(cube);
+	ucc(cube);
+	fcc(cube);
+	ucw(cube);
+	fcw(cube);
+}
+
+//yellow side
+function yellowCross(cube)
+{
+	fcw(cube);
+	rcw(cube);
+	ucw(cube);
+	rcc(cube);
+	ucc(cube);
+	fcc(cube);
+}
+
+function swapEdges(cube)
+{
+	rcw(cube);
+	ucw(cube);
+	rcc(cube);
+	ucw(cube);
+	rcw(cube);
+	ucw(cube);
+	ucw(cube);
+	rcc(cube);
+	ucw(cube);
+}
+function cycleCorners(cube)
+{
+	ucw(cube);
+	rcw(cube);
+	ucc(cube);
+	lcc(cube);
+	ucw(cube);
+	rcc(cube);
+	ucc(cube);
+	lcw(cube);
+}
+function orientCorners(cube)
+{
+	rcc(cube);
+	dcc(cube);
+	rcw(cube);
+	dcw(cube);
+}
+
 //helper functions
 function copyArray(myarray)
 {
