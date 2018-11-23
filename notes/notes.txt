@@ -1,0 +1,4 @@
+Notes
+
+Each side different color
+https://stackoverflow.com/questions/14924187/change-the-colors-of-a-cubes-faces
