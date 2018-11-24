@@ -125,9 +125,7 @@ function rcc(cube)
 	}
 }
 
-//Left Clockwise -- NOT TESTED
-/*error: seems to be turning right counterclockwise for the edges but 
-/the face rotation seems fine */
+//Left Clockwise -- seems to work now
 function lcw(cube)
 {
 	//with white up and green face
@@ -157,8 +155,8 @@ function lcw(cube)
 		}
 		if(i==3) {
 			for(j=0;j<3;j++) {
-				//top <-back
-				cube[sides[0]][2-j][0]=temp[sides[3]][j][2];
+				//back <-bot
+				cube[sides[3]][2-j][2]=temp[sides[2]][j][2];
 			}
 		}
 		/*old
