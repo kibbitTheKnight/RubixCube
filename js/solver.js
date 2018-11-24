@@ -40,7 +40,7 @@ for(f = 0; f < 6; f++)
 var sides= [];
 
 //Right Clockwise
-//? what do you mean by this
+
 function rcw(cube)
 {
 	//with white up and green face
@@ -126,6 +126,8 @@ function rcc(cube)
 }
 
 //Left Clockwise -- NOT TESTED
+/*error: seems to be turning right counterclockwise for the edges but 
+/the face rotation seems fine */
 function lcw(cube)
 {
 	//with white up and green face
@@ -134,6 +136,32 @@ function lcw(cube)
 	
 	for(i = 0; i < 4; i++)
 	{
+		if(i==0) {
+			for(j=0;j<3;j++) {
+				//top <-back
+			cube[sides[i]][2-j][0]=temp[sides[3]][j][2];
+			}
+		}
+		if(i==1) {
+			for(j=0;j<3;j++){
+				//front <-top
+				cube[sides[1]][j][0]=temp[sides[0]][j][0];
+			}
+		}
+		
+		if(i==2) {
+			for (j=0;j<3;j++) {
+				//bot <- front
+				cube[sides[2]][j][0]=temp[sides[1]][j][0];
+			}
+		}
+		if(i==3) {
+			for(j=0;j<3;j++) {
+				//top <-back
+				cube[sides[0]][2-j][0]=temp[sides[3]][j][2];
+			}
+		}
+		/*old
 		if(i > 2)
 		{
 			for(j = 0; j < 3; j++)
@@ -147,8 +175,8 @@ function lcw(cube)
 			{
 				cube[sides[i]][j][2] = temp[sides[i+1]][j][2];
 			}
-		}
-	}
+		}*/
+	}	
 	tempFaces = copyArray(cube);
 	for(i = 0; i < 3; i++)
 	{
