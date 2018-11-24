@@ -282,7 +282,7 @@ function ucw(cube)
 				cube[sides[3]][0][j]=temp[sides[2]][0][j];
 			}
 		}
-		/*
+		/* old
 		if(i > 2)
 		{
 			for(j = 0; j < 3; j++)
