@@ -8,8 +8,10 @@
 //create cube with faces
 var cube = [];
 //for each face
+
 for(f = 0; f < 6; f++)
 {
+	
 	//go through each row
 	var faces = [];
 	for(i = 0; i < 3; i++)
@@ -125,7 +127,7 @@ function rcc(cube)
 	}
 }
 
-//Left Clockwise -- seems to work now
+//Left Clockwise 
 function lcw(cube)
 {
 	//with white up and green face
@@ -137,13 +139,13 @@ function lcw(cube)
 		if(i==0) {
 			for(j=0;j<3;j++) {
 				//top <-back
-			cube[sides[i]][2-j][0]=temp[sides[3]][j][2];
+			cube[sides[i]][2-j][2]=temp[sides[3]][j][2];
 			}
 		}
 		if(i==1) {
 			for(j=0;j<3;j++){
 				//front <-top
-				cube[sides[1]][j][0]=temp[sides[0]][j][0];
+				cube[sides[1]][j][0]=temp[sides[0]][j][2];
 			}
 		}
 		
@@ -156,7 +158,7 @@ function lcw(cube)
 		if(i==3) {
 			for(j=0;j<3;j++) {
 				//back <-bot
-				cube[sides[3]][2-j][2]=temp[sides[2]][j][2];
+				cube[sides[3]][2-j][2]=temp[sides[2]][j][0];
 			}
 		}
 		/*old
@@ -185,7 +187,7 @@ function lcw(cube)
 	}
 }
 
-//Left Counterclockwise -- NOT TESTED
+//Left Counterclockwise
 function lcc(cube)
 {
 	//with white up and green face
@@ -194,6 +196,32 @@ function lcc(cube)
 	
 	for(i = 0; i < 4; i++)
 	{
+		if(i==0) {
+			for (j=0;j<3;j++) {
+				//top <-front
+				cube[sides[0]][2-j][2]=temp[sides[1]][j][0];
+			}
+		}
+		if(i==1) {
+			for (j=0;j<3;j++) {
+			//front <-bot
+			cube[sides[1]][j][0]=temp[sides[2]][j][0];	
+			}	
+		}
+		if(i==2) {
+			for (j=0;j<3;j++) {
+			//bot <-back
+			cube[sides[2]][2-j][0]=temp[sides[3]][j][2];	
+			}	
+		}
+		if(i==3) {
+			for (j=0;j<3;j++) {
+			//back <-top
+			cube[sides[3]][j][2]=temp[sides[0]][j][2];	
+			}	
+		}
+		
+		/*old
 		if(i > 2)
 		{
 			for(j = 0; j < 3; j++)
@@ -208,18 +236,20 @@ function lcc(cube)
 				cube[sides[i]][j][2] = temp[sides[i+1]][j][2];
 			}
 		}
+		*/
 	}
 	tempFaces = copyArray(cube);
 	for(i = 0; i < 3; i++)
 	{
 		for(j = 0; j < 3; j++)
 		{
-			cube[1][i][j] = tempFaces[3][j][2 - i];
+			cube[1][i][j] = tempFaces[1][j][2 - i];
 		}
 	}
+
 }
 
-//Upper Clockwise -- NOT TESTED
+//Upper Clockwise
 function ucw(cube)
 {
 	//with white up and green face
@@ -228,6 +258,31 @@ function ucw(cube)
 	
 	for(i = 0; i < 4; i++)
 	{
+		if(i==0) {
+			for(j=0;j<3;j++){
+				//left <-back
+				cube[sides[0]][0][j]=temp[sides[3]][0][j];
+			}
+		}
+		if(i==1) {
+			for(j=0;j<3;j++){
+			//front <-left
+			cube[sides[1]][0][j]=temp[sides[0]][0][j];
+		}
+		}
+		if(i==2) {
+			for(j=0;j<3;j++){
+				//right <-front
+				cube[sides[3]][0][j]=temp[sides[1]][0][j];
+			}
+		}
+		if(i==3) {
+			for(j=0;j<3;j++){
+				//back <-right
+				cube[sides[3]][0][j]=temp[sides[2]][0][j];
+			}
+		}
+		/*
 		if(i > 2)
 		{
 			for(j = 0; j < 3; j++)
@@ -242,17 +297,21 @@ function ucw(cube)
 				cube[sides[i]][0][j] = temp[sides[i+1]][0][j];
 			}
 		}
+		*/
 	}
+	//need to test this part more
 	tempFaces = copyArray(cube);
 	for(i = 0; i < 3; i++)
 	{
+		placeholder=2;
 		for(j = 0; j < 3; j++)
 		{
-			cube[0][i][j] = tempFaces[3][2 - j][i];
+			cube[0][i][j] = tempFaces[0][placeholder][i];
+			placeholder--;
 		}
 	}
 }
-//Upper Counterclockwise -- NOT TESTED
+//Upper Counterclockwise
 function ucc(cube)
 {
 	//with white up and green face
@@ -281,7 +340,7 @@ function ucc(cube)
 	{
 		for(j = 0; j < 3; j++)
 		{
-			cube[0][i][j] = tempFaces[3][j][2 - i];
+			cube[0][i][j] = tempFaces[0][j][2 - i];
 		}
 	}
 }
@@ -583,6 +642,8 @@ function bcc(cube)
 	for (i=0;i<3;i++){
 		add=2;
 		for (j=0;j<3;j++) {
+			//i think this formula is wrong
+			
 			cube[side[4]][i][j]=tempFaces[side[4]][j+add][i];
 		}
 		add--;
