@@ -139,26 +139,26 @@ function lcw(cube)
 		if(i==0) {
 			for(j=0;j<3;j++) {
 				//top <-back
-			cube[sides[i][2-j][0]=cube[sides[3]][j][2];
+			cube[sides[i]][2-j][0]=temp[sides[3]][j][2];
 			}
 		}
 		if(i==1) {
 			for(j=0;j<3;j++){
 				//front <-top
-				cube[sides[1]][j][0]=cube[sides[0]][j][0];
+				cube[sides[1]][j][0]=temp[sides[0]][j][0];
 			}
 		}
 		
 		if(i==2) {
 			for (j=0;j<3;j++) {
 				//bot <- front
-				cube[sides[2]][j][0]=cube[sides[1]][j][0];
+				cube[sides[2]][j][0]=temp[sides[1]][j][0];
 			}
 		}
 		if(i==3) {
 			for(j=0;j<3;j++) {
 				//top <-back
-				cube[sides[0]][2-j][0]=cube[sides[3]][j][2];
+				cube[sides[0]][2-j][0]=temp[sides[3]][j][2];
 			}
 		}
 		/*old
@@ -186,7 +186,7 @@ function lcw(cube)
 		}
 	}
 }
-*/
+
 //Left Counterclockwise -- NOT TESTED
 function lcc(cube)
 {
