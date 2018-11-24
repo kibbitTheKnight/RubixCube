@@ -338,13 +338,14 @@ function ucc(cube)
 	tempFaces = copyArray(cube);
 	for(i = 0; i < 3; i++)
 	{
+		
 		for(j = 0; j < 3; j++)
 		{
 			cube[0][i][j] = tempFaces[0][j][2 - i];
 		}
 	}
 }
-//Lower Clockwise -- NOT TESTED
+//Lower Clockwise
 function lcw(cube)
 {
 	//with white up and green face
@@ -371,10 +372,13 @@ function lcw(cube)
 	tempFaces = copyArray(cube);
 	for(i = 0; i < 3; i++)
 	{
+		placeholder=2;
 		for(j = 0; j < 3; j++)
 		{
-			cube[5][i][j] = tempFaces[3][2 - j][i];
+			cube[5][i][j] = tempFaces[5][placeholder][i];
+			placeholder--;
 		}
+		
 	}
 }
 //Lower Counterclockwise -- NOT TESTED
