@@ -2,8 +2,9 @@
 <html>
 	<head>
 	<title>Final Project: Rubix Cube Solver</title>
-	<script  src="https://threejs.org/build/three.js"></script>
-	<script  src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+	<script src="https://threejs.org/build/three.js"></script>
+	<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+	<!--<script src = "../js/solver.js" </script>-->
 	<script>
 		function rotate(face, cube, axis, scene)
 		{
@@ -22,10 +23,20 @@
 			{
 				list.add(cube[turns[face][i]]);
 			}
+			console.log(list);
 			for(i = 0; i < 9; i++)
 			{
 				list.rotateOnAxis(axis, Math.PI / 2);
+				//cube.splice(turns[face][i], 0, list[i]);
+				//list.remove(i);
 			}
+			list.children.forEach(function(oneCube) 
+			{
+				cube.splice(turns[face][i], 0, oneCube);
+			});
+			
+			console.log(list);
+			//scene.add(cube);
 			scene.add(list);
 			
 		
@@ -125,18 +136,24 @@
 				new THREE.MeshBasicMaterial({color: 0x2f55cf}), // green
 			];
 			var cube = createCubes(scene, materials);
-			//var rotAmount = 4;
+			var rotAmount = 2;
+			rotate(rotAmount, cube, axis[rotAmount], scene);
+			rotate(rotAmount, cube, axis[rotAmount], scene);
+			render();
+			//rotAmount = 0;
 			//rotate(rotAmount, cube, axis[rotAmount], scene);
 			
 			//animation function
-			let render = function () 
+			function render()
 			{
+				requestAnimationFrame(render); 
 				renderer.render( scene, camera );
 			};
 				
 			//controls
 			let cameraControl= new THREE.OrbitControls( camera );
 			cameraControl.addEventListener( 'change', render );
+			//cameraControl.addEventListener( 'change', rotate(4, cube, axis[4], scene) );
 			render();
 		}
 		</script>
