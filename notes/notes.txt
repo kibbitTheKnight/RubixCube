@@ -4,3 +4,5 @@ Each side different color
 https://stackoverflow.com/questions/14924187/change-the-colors-of-a-cubes-faces
 
 https://github.com/geof90/rubiks/blob/master/main.js <-- Used
+
+http://www.html5rubik.com/tutorial/

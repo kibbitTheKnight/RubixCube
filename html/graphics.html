@@ -6,7 +6,7 @@
 	<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
 	<!--<script src = "../js/solver.js" </script>-->
 	<script>
-		function rotate(face, cube, axis, scene)
+		function rotate(face, cube, axis, scene, r)
 		{
 			var turns = [];
 			turns.push(new Array(6));
@@ -18,54 +18,19 @@
 			turns[2] = [24, 25, 26, 15, 16, 17, 6, 7, 8]; //up, white face
 			turns[3] = [0, 1, 2, 9, 10, 11, 18, 19, 20]; //down, yellow face
 			
-			var list = new THREE.Object3D();
-			for(i = 0; i < 9; i++)
-			{
-				list.add(cube[turns[face][i]]);
-				//console.log(list);
-			}
-			
 			for(i = 0; i < cube.length; i++)
 			{
 				scene.remove(cube[i]);
 			}
 			
-			//console.log(list);
 			for(i = 0; i < 9; i++)
 			{
-				cube[turns[face][i]].rotateOnAxis(axis, Math.PI / 2);
-				list.rotateOnAxis(axis, Math.PI / 2);
-				//list.remove(i);
+				cube[turns[face][i]].rotateOnAxis(axis, r);
 			}
-			var g = 0;
-			var children = list.children;
-			for(i = 0; i < children.length; i++)
-			{
-				cube.splice(turns[face][i], 1, children[i]);
-				console.log(children[i]);
-			}
-			console.log(cube);
-			/*list.children.forEach(function(oneCube) 
-			{
-				console.log("One Cube" + oneCube);
-				cube.splice(turns[face][g], 1);
-				cube.push(oneCube);
-				//console.log(turns[face][g]);
-				g++;
-			});*/
-			
-			//console.log(cube);
-			
-			//console.log(list);
-			//scene.add(cube);
-			//scene.add(list);
-			//scene.remove(cube);
-			//scene.add(cube);
 			for(i = 0; i < cube.length; i++)
 			{
 				scene.add(cube[i]);
 			}
-			//scene.remove(list)
 			
 		
 		}
@@ -166,11 +131,11 @@
 			var cube = createCubes(scene, materials);
 			//console.log("Cube: " + cube);
 			var rotAmount = 2;
-			rotate(rotAmount, cube, axis[rotAmount], scene);
-			rotate(rotAmount, cube, axis[rotAmount], scene);
+			rotate(rotAmount, cube, axis[rotAmount], scene, Math.PI/2);
+			rotate(rotAmount, cube, axis[rotAmount], scene, Math.PI/2);
 			render();
 			rotAmount = 0;
-			rotate(rotAmount, cube, axis[rotAmount], scene);
+			rotate(rotAmount, cube, axis[rotAmount], scene, Math.PI/2);
 			
 			//animation function
 			function render()
