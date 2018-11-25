@@ -6,21 +6,25 @@
 
 
 //create cube with faces
-var cube = [];
-//for each face
-
-for(f = 0; f < 6; f++)
+function createJSCube()
 {
+	var cube = [];
+	//for each face
 	
-	//go through each row
-	var faces = [];
-	for(i = 0; i < 3; i++)
+	for(f = 0; f < 6; f++)
 	{
-	//fill each spot with the number representing which face it is
-	let temp = Array(3).fill(f);
-	faces.push(temp);
+		
+		//go through each row
+		var faces = [];
+		for(i = 0; i < 3; i++)
+		{
+		//fill each spot with the number representing which face it is
+		let temp = Array(3).fill(f);
+		faces.push(temp);
+		}
+		cube.push(faces);
 	}
-	cube.push(faces);
+	return cube;
 }
 
 //For testing purposes: for(i = 0; i < 6; i++) {faces[i][8] = i + 1;} for(i = 0; i < 3; i++) {for(j = 0; j < 3; j++) {faces[i][j] = (i * 3) + j;}}
@@ -346,7 +350,7 @@ function ucc(cube)
 	}
 }
 //Lower Clockwise
-function lcw(cube)
+function dcw(cube)
 {
 	//with white up and green face
 	sides[0] = 1; sides[1] = 2; sides[2] = 3; sides[3] = 4;
@@ -382,7 +386,7 @@ function lcw(cube)
 	}
 }
 //Lower Counterclockwise
-function lcc(cube)
+function dcc(cube)
 {
 	//with white up and green face
 	sides[0] = 1; sides[1] = 2; sides[2] = 3; sides[3] = 4;
@@ -390,18 +394,18 @@ function lcc(cube)
 	
 	for(i = 0; i < 4; i++)
 	{
-		if(i > 2)
+		if(i == 0)
 		{
 			for(j = 0; j < 3; j++)
 			{
-				cube[sides[i]][2][j] = temp[sides[0]][2][j];
+				cube[sides[i]][2][j] = temp[sides[3]][2][j];
 			}
 		}
 		else
 		{
 			for(j = 0; j < 3; j++)
 			{
-				cube[sides[i]][2][j] = temp[sides[i+1]][2][j];
+				cube[sides[i]][2][j] = temp[sides[i-1]][2][j];
 			}
 		}
 	}
@@ -411,7 +415,7 @@ function lcc(cube)
 		placeholder=2;
 		for(j = 0; j < 3; j++)
 		{
-			cube[5][i][j] = tempFaces[5][j][palceholder];
+			cube[5][i][j] = tempFaces[5][j][placeholder];
 		}
 		placeholder--;
 	}
@@ -546,55 +550,45 @@ function fcc(cube)
 //Back Clockwise 
 function bcw(cube)
 {
-	//the order we will be looking at the sides 
-	//left, top, right, bottom, front
-	sides[0]=1; sides[1]=0; sides[2]=3; sides[3]=5; sides[4]=4;
+	sides[0] = 0; sides[1] = 1; sides[2] = 5; sides[3] = 3;
 	
 	//create copy of cube so it can be modified
 	var temp = copyArray(cube);
 	
-	//rotating the edges
-	for(i=0;i<4;i++){
+	//go through each affected side
+	for(i = 0; i < 4; i++)
+	{
+		//move all cubes to the next side in the side[] list
 		
-		if(i==0) {
-			base=2;
-			for (j=0;j<3;j++){
-				//left <- bot
-				cube[sides[0]][j][0]=temp[sides[3]][2][j];
+		if(i > 2)
+		{
+			for(j = 0; j < 3; j++)
+			{
+				//the top goes to the back
+				//we are looking at the 2nd col of all the sides
+				cube[sides[i]][0][j] = temp[sides[0]][0][j];
 			}
 		}
-		
-		if(i==1)
-			for (j=0;j<3;j++) {
-				//top <- left
-				cube[sides[1]][2][j]=temp[sides[0]][j][0];
-			}
-			
-		if(i==2)
-			base=2;
-			for(j=0;j<3;j++) {
-				//right <- top
-				cube[sides[2]][base-j][2]=temp[sides[1]][2][j];
-			}
-			
-		if (i==3) {
-			for (j=0;j<3;j++) {
-				//bot <-right
-				cube[sides[3]][2][2-j]=temp[sides[2]][j][2];
+		else
+		{
+			for(j = 0; j < 3; j++)
+			{
+				
+				//the rest of the sides go up around to the next side
+				//cube[side][row][column]
+				cube[sides[i]][0][j] = temp[sides[i+1]][0][j];
 			}
 		}
-		
 	}
 	//rotating the face clockwise
 	//create copy of cube so it can be modified
 	tempFaces = copyArray(cube);
-	for (i=0;i<3;i++){
-		placeholder=2;
-		for (j=0;j<3;j++) {
-			cube[sides[4]][j][i]=tempFaces[sides[4]][j][placeholder];
-			placeholder--;
+	for(i = 0; i < 3; i++)
+	{
+		for(j = 0; j < 3; j++)
+		{
+			cube[4][i][j] = tempFaces[4][j][2 - i];
 		}
-		add--;
 	}
 }
 //Back Counterclockwise 
@@ -606,34 +600,22 @@ function bcc(cube)
 	//create copy of cube so it can be modified
 	var temp = copyArray(cube);
 	//rotating the edges
-	for(i=0;i<4;i++){
-		
-		if(i==0) {
-			for (j=0;j<3;j++){
-				//left <- top
-				cube[sides[0]][j][0]=temp[sides[1]][2][j];
+	for(i = 0; i < 4; i++)
+	{
+		if(i == 0)
+		{
+			for(j = 0; j < 3; j++)
+			{
+				cube[sides[i]][0][j] = temp[sides[3]][0][j];
 			}
 		}
-		
-		if(i==1)
-			base=2;
-			for (j=0;j<3;j++) {
-				//top <- right
-				cube[sides[1]][2][2-j]=temp[sides[2]][j][2];
+		else
+		{
+			for(j = 0; j < 3; j++)
+			{
+				cube[sides[i]][0][j] = temp[sides[i-1]][0][j];
 			}
-			
-		if(i==2)
-			for(j=0;j<3; j++) {
-				//right <-bot
-				cube[sides[2]][2-j][2]=temp[sides[3]][2][j];
-			}
-			
-		if (i==3) {
-			for (j=0;j<3;j++) {
-				//bot <-left
-				cube[sides[3]][2][j]=temp[sides[0]][j][0];
-			}
-		}	
+		}
 	}
 	//rotating the face counterclockwise
 	//create copy of cube so it can be modified
@@ -652,102 +634,144 @@ function bcc(cube)
 //solving
 
 //solving white face
-function whiteFacingDown(cube)
+function convertInstruction(cube, instruction, instrNum)
 {
-	fcw(cube);
-	fcw(cube);
+	//console.log(instruction);
+	switch(instruction)
+	{
+		case "fcw" : {fcw(cube); instrNum[0] = 4; instrNum[1] = -1; break;}
+		case "fcc" : {fcc(cube); instrNum[0] = 4; instrNum[1] = 1; break;}
+		case "lcw" : {lcw(cube); instrNum[0] = 0; instrNum[1] = 1; break;}
+		case "lcc" : {lcc(cube); instrNum[0] = 0; instrNum[1] = -1; break;}
+		case "rcw" : {rcw(cube); instrNum[0] = 1; instrNum[1] = 1; break;}
+		case "rcc" : {rcc(cube); instrNum[0] = 1; instrNum[1] = -1; break;}
+		case "dcw" : {dcw(cube); instrNum[0] = 3; instrNum[1] = -1; break;}
+		case "dcc" : {dcc(cube); instrNum[0] = 3; instrNum[1] = 1; break;}
+		case "bcw" : {bcw(cube); instrNum[0] = 5; instrNum[1] = 1; break;}
+		case "bcc" : {bcc(cube); instrNum[0] = 5; instrNum[1] = -1; break;}
+		case "ucw" : {ucw(cube); instrNum[0] = 2; instrNum[1] = -1; break;}
+		case "ucc" : {ucc(cube); instrNum[0] = 2; instrNum[1] = 1; break;}
+	}
+}
+function whiteFacingDown(cube, instructions)
+{
+	instructions.push("fcw");
+	instructions.push("fcw");
 }
 function whiteAtBottom(cube)
 {
-	dcw(cube);
-	rcw(cube);
-	fcc(cube);
-	rcc(cube);
+	instructions.push("dcw");
+	instructions.push("rcw");
+	instructions.push("fcc");
+	instructions.push("rcc");
 }
 function whiteStuck(cube)
 {
-	lcw(cube);
-	dcw(cube);
-	lcc(cube);
+	instructions.push("lcw");
+	instructions.push("dcw");
+	instructions.push("lcc")
 }
 
 function finishFace(cube)
 {
-	rcc(cube);
-	dcc(cube);
-	rcw(cube);
-	dcw(cube);
+	instructions.push("rcc");
+	instructions.push("dcc");
+	instructions.push("rcw");
+	instructions.push("dcw");
 }
 
 //solving center layer
 function leftCenter(cube)
 {
-	ucc(cube);
-	lcc(cube);
-	ucw(cube);
-	lcw(cube);
-	ucw(cube);
-	fcw(cube);
-	ucc(cube);
-	fcc(cube);
+	instructions.push("ucc");
+	instructions.push("lcc");
+	instructions.push("ucw");
+	instructions.push("lcw");
+	instructions.push("ucw");
+	instructions.push("fcw");
+	instructions.push("ucc");
+	instructions.push("fcc");
 }
 
 function leftCenter(cube)
 {
-	ucw(cube);
-	rcw(cube);
-	ucc(cube);
-	rcc(cube);
-	ucc(cube);
-	fcc(cube);
-	ucw(cube);
-	fcw(cube);
+	instructions.push("ucw");
+	instructions.push("rcw");
+	instructions.push("ucc");
+	instructions.push("rcc");
+	instructions.push("ucc");
+	instructions.push("fcc");
+	instructions.push("ucw");
+	instructions.push("fcw");
 }
 
 //yellow side
 function yellowCross(cube)
 {
-	fcw(cube);
-	rcw(cube);
-	ucw(cube);
-	rcc(cube);
-	ucc(cube);
-	fcc(cube);
+	instructions.push("fcw");
+	instructions.push("rcw");
+	instructions.push("ucw");
+	instructions.push("rcc");
+	instructions.push("ucc");
+	instructions.push("fcc");
 }
 
 function swapEdges(cube)
 {
-	rcw(cube);
-	ucw(cube);
-	rcc(cube);
-	ucw(cube);
-	rcw(cube);
-	ucw(cube);
-	ucw(cube);
-	rcc(cube);
-	ucw(cube);
+	instructions.push("rcw");
+	instructions.push("ucw");
+	instructions.push("rcc");
+	instructions.push("ucw");
+	instructions.push("rcw");
+	instructions.push("ucw");
+	instructions.push("ucw");
+	instructions.push("rcc");
+	instructions.push("ucw");
 }
 function cycleCorners(cube)
 {
-	ucw(cube);
-	rcw(cube);
-	ucc(cube);
-	lcc(cube);
-	ucw(cube);
-	rcc(cube);
-	ucc(cube);
-	lcw(cube);
+	instructions.push("ucw");
+	instructions.push("rcw");
+	instructions.push("ucc");
+	instructions.push("lcc");
+	instructions.push("ucw");
+	instructions.push("rcc");
+	instructions.push("ucc");
+	instructions.push("lcw");
 }
 function orientCorners(cube)
 {
-	rcc(cube);
-	dcc(cube);
-	rcw(cube);
-	dcw(cube);
+	instructions.push("rcc");
+	instructions.push("dcc");
+	instructions.push("rcw");
+	instructions.push("dcw");
 }
 
 //helper functions
 function copyArray(myarray)
 {
 	return JSON.parse(JSON.stringify(myarray));
+}
+
+function scrambleCube(moves, amount)
+{
+	var instructions = [];
+	instructions.push("fcw");
+	instructions.push("fcc");
+	instructions.push("bcw");
+	instructions.push("bcc");
+	instructions.push("rcw");
+	instructions.push("rcc");
+	instructions.push("lcw");
+	instructions.push("lcc");
+	instructions.push("ucw");
+	instructions.push("ucc");
+	instructions.push("dcw");
+	instructions.push("dcc");
+	for(i = 0; i < amount; i++)
+	{
+		var num = Math.floor(Math.random() * 12);
+		moves.push(instructions[num]);
+	}
+	
 }

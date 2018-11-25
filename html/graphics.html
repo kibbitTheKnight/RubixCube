@@ -4,9 +4,9 @@
 	<title>Final Project: Rubix Cube Solver</title>
 	<script src="https://threejs.org/build/three.js"></script>
 	<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
-	<!--<script src = "../js/solver.js" </script>-->
+	<script src = "../js/solver.js" </script></script>
 	<script>
-		function rotate(face, cube, axis, scene, r)
+	function rotateCube(face, cube, axis, scene, r, cc)
 		{
 			var turns = [];
 			turns.push(new Array(6));
@@ -25,7 +25,7 @@
 			
 			for(i = 0; i < 9; i++)
 			{
-				cube[turns[face][i]].rotateOnAxis(axis, r);
+				cube[turns[face][i]].rotateOnAxis(axis, cc * r);
 			}
 			for(i = 0; i < cube.length; i++)
 			{
@@ -34,9 +34,6 @@
 			
 		
 		}
-	</script>
-	
-	<script>
 		function createCubes(scene, materials) 
 		{
 			var cubes = [];
@@ -130,12 +127,36 @@
 			];
 			var cube = createCubes(scene, materials);
 			//console.log("Cube: " + cube);
-			var rotAmount = 2;
-			rotate(rotAmount, cube, axis[rotAmount], scene, Math.PI/2);
-			rotate(rotAmount, cube, axis[rotAmount], scene, Math.PI/2);
-			render();
+			var instruc = "bcw";
+			var ins = new Array(2);
+			
+			
+			var jsCube = createJSCube();
+			
+			
+			convertInstruction(jsCube, instruc, ins);
+			console.log(jsCube);
+			
+			//rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+			
+			var moves = [];
+			scrambleCube(moves, 1);
+			console.log(moves);
+			
+			for(h = 0; h < moves.length; h++)
+			{
+				convertInstruction(jsCube, moves[h], ins);
+				rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+			}
+			
+			//console.log(ins);
+			
+			//var rotAmount = 0;
+			//rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+			//rotateCube(rotAmount, cube, axis[rotAmount], scene, Math.PI/2);
+			//render();
 			rotAmount = 0;
-			rotate(rotAmount, cube, axis[rotAmount], scene, Math.PI/2);
+			//rotateCube(rotAmount, cube, axis[rotAmount], scene, Math.PI/2);
 			
 			//animation function
 			function render()
