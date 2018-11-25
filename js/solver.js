@@ -381,7 +381,7 @@ function lcw(cube)
 		
 	}
 }
-//Lower Counterclockwise -- NOT TESTED
+//Lower Counterclockwise
 function lcc(cube)
 {
 	//with white up and green face
@@ -408,19 +408,21 @@ function lcc(cube)
 	tempFaces = copyArray(cube);
 	for(i = 0; i < 3; i++)
 	{
+		placeholder=2;
 		for(j = 0; j < 3; j++)
 		{
-			cube[5][i][j] = tempFaces[3][j][2 - i];
+			cube[5][i][j] = tempFaces[5][j][palceholder];
 		}
+		placeholder--;
 	}
 }
-//Front Clockwise -- not tested
-//bro this took me so long to plan out it better work the 1st time we test this
+//Front Clockwise
+//bro this took me so long to plan out it better work the 1st time--IT DIDNT BTW 
 function fcw(cube)
 {
 	//the order we will be looking at the sides 
 	//left, top, right, bottom
-	side[0]=1; side[1]=0; side[2]=3; side[3]=5;
+	sides[0]=1; sides[1]=0; sides[2]=3; sides[3]=5;
 	
 	//create copy of cube so it can be modified
 	var temp = copyArray(cube);
@@ -428,43 +430,34 @@ function fcw(cube)
 	//rotating the edges
 	for ( i=0; i<4; i++) {
 		
-		
-		//left edge to top
 		if(i==0){
 			for (j =0;j<3; j++) {
-				//top 					<-	left
-				cube[side[i]][j][2]=temp[side[i+1]][j][2];
+				//left <-bot
+				cube[sides[0]][j][2]=temp[sides[3]][0][j];
 			
 			}
-			
-			//top to right
+		}
 			if(i==1) {
-				//base will stay the same, we will subtract j
-				//from this to get the correct row
-				base=2;
 				for(j=0;j<3;j++){
-					//right <-top
-				cube[side[i]][base-j][2]=temp[side[i+1]][j][0];
+					//top <-left
+				cube[sides[1]][0][j]=temp[sides[0]][j][2];
 				}
 				
 			}
-			
-			//right to bottom
+		
 			if(i==2) {
 				for (j=0;j<3;j++){
-					//bottom           <- right
-					cube[side[2]][j][0]=temp[side[i+1]][j][0];
+					//right <-top
+					cube[sides[2]][j][0]=temp[sides[1]][0][j];
 				}
 			}
 			
-			//from bottom edge to left edge
+
 			if(i==3) {
-				//base will stay the same, we will subtract j 
-				//from this to get the correct row
 				base=2;
 				for(j=0; j<3;j++) {
-					//left <- bottom
-					cube[side[i]][base-j][0] = temp[side[3]][j][2];
+					//bot <-right
+					cube[sides[3]][0][j] = temp[sides[2]][0][j];
 					
 				}
 			
@@ -473,7 +466,7 @@ function fcw(cube)
 			
 		}
 		
-	}
+	
 	
 	//create copy of cube so it can be modified
 		tempFaces = copyArray(cube);
@@ -490,18 +483,19 @@ function fcw(cube)
 			}
 		}
 }
-//Front Counterclockwise -- not tested
+
+//Front Counterclockwise
 function fcc(cube)
 {
 	//the order we will be looking at the sides 
 	//left, top, right, bottom, front
-	side[0]=1; side[1]=0; side[2]=3; side[3]=5; side[4]=4;
+	sides[0]=1; sides[1]=0; sides[2]=3; sides[3]=5; sides[4]=4;
 	
 	//create copy of cube so it can be modified
 	var temp = copyArray(cube);
 	
 	//rotate the edges
-	(i=0;i<4;i++){
+	for( i=0; i<4; i++){
 		
 		if(i==0) {
 			
@@ -510,43 +504,45 @@ function fcc(cube)
 			base=2;
 			for (j=0;j<3;j++) {
 				
-				//bottom <- left
-				cube[3][base-j][0]=temp[0][j][2];
+				//left <-top
+				cube[sides[0]][j][2]=temp[sides[1]][0][j];
 			}
 		}
+	
+	
 		if(i==1){
 			for(j=0;j<3;j++){
-				//right <- bottom
-				cube[2][j][0]=temp[3][j][0];
+				//top <-right
+				cube[sides[i]][0][j]=temp[sides[2]][j][0];
 			}
 		}
 		if(i==2) {
 			base =2;
 			for(j=0;j<3;j++){
-				//top <- right
-				cube[1][base-j][2]=temp[2][j][0];
+				//right <-bot
+				cube[sides[i]][j][0]=temp[sides[3]][0][j];
 			}
 		}
 		if(i==3) {
 			for(j=0;j<3;j++){
-				//left <-top
-				cube[0][j][2]=temp[1][j][2];
+				//bot <-left
+				cube[sides[i]][0][j]=temp[sides[0]][j][2];
 			}
 		}
-		
 	}
+	
 	//create copy of cube so it can be modified
 	tempFaces = copyArray(cube);
 	//front face rotating counterclockwise
 	for (i=0;i<3;i++){
 		add=2;
 		for (j=0;j<3;j++) {
-			cube[side[4]][j][i]=tempFaces[side[4]][j][i+add];
+			cube[sides[4]][j][i]=tempFaces[sides[4]][j][i+add];
 			add--;
 		}
 	}
-	
 }
+
 //Back Clockwise -- not tested
 function bcw(cube)
 {
