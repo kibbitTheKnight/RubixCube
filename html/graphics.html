@@ -48,7 +48,6 @@
 						var cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
 						var cube = new THREE.Mesh(cubeGeometry, faceMaterial);
 						var position = 1.05;
-						
 						cube.position.x = (x - 1) * position;
 						cube.position.y = (y - 1) * position;
 						cube.position.z = (z - 1) * position;
@@ -127,27 +126,37 @@
 			];
 			var cube = createCubes(scene, materials);
 			//console.log("Cube: " + cube);
-			var instruc = "bcw";
+			var instruc = "rcc"; //tested: r, l, f, u, d, b
 			var ins = new Array(2);
 			
 			
 			var jsCube = createJSCube();
 			
-			
+			/*
 			convertInstruction(jsCube, instruc, ins);
 			console.log(jsCube);
 			
-			//rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+			rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+			
+			
+			instruc = "dcc";
+			convertInstruction(jsCube, instruc, ins);
+			rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+			console.log(jsCube);*/
+			
 			
 			var moves = [];
-			scrambleCube(moves, 1);
+			scrambleCube(moves, 2);
 			console.log(moves);
 			
 			for(h = 0; h < moves.length; h++)
 			{
-				convertInstruction(jsCube, moves[h], ins);
-				rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+				//convertInstruction(jsCube, moves[h], ins);
+				//rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+				//console.log(jsCube);
 			}
+			
+			//console.log(jsCube);
 			
 			//console.log(ins);
 			
@@ -163,11 +172,18 @@
 			{
 				requestAnimationFrame(render); 
 				renderer.render( scene, camera );
+				console.log(moves);
+				for(h = 0; h < moves.length; h++)
+				{
+					convertInstruction(jsCube, moves[h], ins);
+					rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+					console.log(jsCube);
+				}
 			};
 				
 			//controls
 			let cameraControl= new THREE.OrbitControls( camera );
-			cameraControl.addEventListener( 'change', render );
+			//cameraControl.addEventListener( 'change', render );
 			//cameraControl.addEventListener( 'change', rotate(4, cube, axis[4], scene) );
 			render();
 		}

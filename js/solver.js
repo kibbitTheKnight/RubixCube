@@ -63,7 +63,14 @@ function rcw(cube)
 	{
 		//move all cubes to the next side in the side[] list
 		
-		if(i > 2)
+		if(i == 3)
+		{
+			for(j = 0; j < 3; j++)
+			{
+				cube[sides[i]][j][0] = temp[sides[0]][j][2];
+			}
+		}
+		else if(i > 2)
 		{
 			for(j = 0; j < 3; j++)
 			{
@@ -113,6 +120,13 @@ function rcc(cube)
 				cube[sides[i]][j][2] = temp[sides[3]][j][2];
 			}
 		}
+		else if(i == 3)
+		{
+			for(j = 0; j < 3; j++)
+			{
+				cube[sides[i]][j][0] = temp[sides[2]][j][2];
+			}
+		}
 		else
 		{
 			for(j = 0; j < 3; j++)
@@ -143,7 +157,7 @@ function lcw(cube)
 		if(i==0) {
 			for(j=0;j<3;j++) {
 				//top <-back
-			cube[sides[i]][2-j][2]=temp[sides[3]][j][2];
+			cube[sides[i]][2-j][0]=temp[sides[3]][j][0];
 			}
 		}
 		if(i==1) {
@@ -203,7 +217,7 @@ function lcc(cube)
 		if(i==0) {
 			for (j=0;j<3;j++) {
 				//top <-front
-				cube[sides[0]][2-j][2]=temp[sides[1]][j][0];
+				cube[sides[0]][2-j][0]=temp[sides[1]][j][0];
 			}
 		}
 		if(i==1) {
@@ -257,7 +271,7 @@ function lcc(cube)
 function ucw(cube)
 {
 	//with white up and green face
-	sides[0] = 1; sides[1] = 2; sides[2] = 3; sides[3] = 4;
+	sides[0] = 4; sides[1] = 3; sides[2] = 2; sides[3] = 1;
 	var temp = copyArray(cube);
 	
 	for(i = 0; i < 4; i++)
@@ -277,7 +291,7 @@ function ucw(cube)
 		if(i==2) {
 			for(j=0;j<3;j++){
 				//right <-front
-				cube[sides[3]][0][j]=temp[sides[1]][0][j];
+				cube[sides[2]][0][j]=temp[sides[1]][0][j];
 			}
 		}
 		if(i==3) {
@@ -319,7 +333,7 @@ function ucw(cube)
 function ucc(cube)
 {
 	//with white up and green face
-	sides[0] = 1; sides[1] = 2; sides[2] = 3; sides[3] = 4;
+	sides[0] = 4; sides[1] = 3; sides[2] = 2; sides[3] = 1;
 	var temp = copyArray(cube);
 	
 	for(i = 0; i < 4; i++)
@@ -353,7 +367,7 @@ function ucc(cube)
 function dcw(cube)
 {
 	//with white up and green face
-	sides[0] = 1; sides[1] = 2; sides[2] = 3; sides[3] = 4;
+	sides[0] = 4; sides[1] = 3; sides[2] = 2; sides[3] = 1;
 	var temp = copyArray(cube);
 	
 	for(i = 0; i < 4; i++)
@@ -389,7 +403,7 @@ function dcw(cube)
 function dcc(cube)
 {
 	//with white up and green face
-	sides[0] = 1; sides[1] = 2; sides[2] = 3; sides[3] = 4;
+	sides[0] = 4; sides[1] = 3; sides[2] = 2; sides[3] = 1;
 	var temp = copyArray(cube);
 	
 	for(i = 0; i < 4; i++)
@@ -437,14 +451,14 @@ function fcw(cube)
 		if(i==0){
 			for (j =0;j<3; j++) {
 				//left <-bot
-				cube[sides[0]][j][2]=temp[sides[3]][0][j];
+				cube[sides[0]][j][2]=temp[sides[3]][2][j];
 			
 			}
 		}
 			if(i==1) {
 				for(j=0;j<3;j++){
 					//top <-left
-				cube[sides[1]][0][j]=temp[sides[0]][j][2];
+				cube[sides[1]][2][j]=temp[sides[0]][j][2];
 				}
 				
 			}
@@ -509,7 +523,7 @@ function fcc(cube)
 			for (j=0;j<3;j++) {
 				
 				//left <-top
-				cube[sides[0]][j][2]=temp[sides[1]][0][j];
+				cube[sides[0]][j][2]=temp[sides[1]][2][j];
 			}
 		}
 	
@@ -517,7 +531,7 @@ function fcc(cube)
 		if(i==1){
 			for(j=0;j<3;j++){
 				//top <-right
-				cube[sides[i]][0][j]=temp[sides[2]][j][0];
+				cube[sides[i]][2][j]=temp[sides[2]][j][2];
 			}
 		}
 		if(i==2) {
@@ -541,7 +555,8 @@ function fcc(cube)
 	for (i=0;i<3;i++){
 		add=2;
 		for (j=0;j<3;j++) {
-			cube[sides[4]][j][i]=tempFaces[sides[4]][j][i+add];
+			console.log(tempFaces[2][j][2 - 1] + " " + j + " " + (2 - i));
+			cube[2][j][i]=tempFaces[2][j][2 - 1];
 			add--;
 		}
 	}
@@ -560,7 +575,21 @@ function bcw(cube)
 	{
 		//move all cubes to the next side in the side[] list
 		
-		if(i > 2)
+		if(i == 1)
+		{
+			for(j = 0; j < 3; j++)
+			{
+				cube[sides[i]][j][0] = temp[sides[i + 1]][0][j];
+			}
+		}
+		else if (i == 3)
+		{
+			for(j = 0; j < 3; j++)
+			{
+				cube[sides[i]][j][2] = temp[sides[0]][0][j];
+			}
+		}
+		else if(i > 2)
 		{
 			for(j = 0; j < 3; j++)
 			{
@@ -595,7 +624,7 @@ function bcw(cube)
 function bcc(cube)
 {
 	//left, top, right, bot, back
-	sides[0] = 1; sides[1] = 0; sides[2] = 3; sides[3] = 5; sides[4] = 4;
+	sides[0] = 5; sides[1] = 3; sides[2] = 0; sides[3] = 1; sides[4] = 4;
 	
 	//create copy of cube so it can be modified
 	var temp = copyArray(cube);
@@ -607,6 +636,20 @@ function bcc(cube)
 			for(j = 0; j < 3; j++)
 			{
 				cube[sides[i]][0][j] = temp[sides[3]][0][j];
+			}
+		}
+		else if(i == 3)
+		{
+			for(j = 0; j < 3; j++)
+			{
+				cube[sides[i]][j][0] = temp[sides[i - 1]][0][j];
+			}
+		}
+		else if(i == 1)
+		{
+			for(j = 0; j < 3; j++)
+			{
+				cube[sides[i]][j][2] = temp[sides[i - 1]][0][j];
 			}
 		}
 		else
@@ -636,6 +679,8 @@ function bcc(cube)
 //solving white face
 function convertInstruction(cube, instruction, instrNum)
 {
+	console.log("Cube " + cube);
+	temp = copyArray(cube);
 	//console.log(instruction);
 	switch(instruction)
 	{
@@ -645,13 +690,14 @@ function convertInstruction(cube, instruction, instrNum)
 		case "lcc" : {lcc(cube); instrNum[0] = 0; instrNum[1] = -1; break;}
 		case "rcw" : {rcw(cube); instrNum[0] = 1; instrNum[1] = 1; break;}
 		case "rcc" : {rcc(cube); instrNum[0] = 1; instrNum[1] = -1; break;}
-		case "dcw" : {dcw(cube); instrNum[0] = 3; instrNum[1] = -1; break;}
-		case "dcc" : {dcc(cube); instrNum[0] = 3; instrNum[1] = 1; break;}
+		case "dcw" : {dcw(cube); instrNum[0] = 3; instrNum[1] = 1; break;}
+		case "dcc" : {dcc(cube); instrNum[0] = 3; instrNum[1] = -1; break;}
 		case "bcw" : {bcw(cube); instrNum[0] = 5; instrNum[1] = 1; break;}
 		case "bcc" : {bcc(cube); instrNum[0] = 5; instrNum[1] = -1; break;}
 		case "ucw" : {ucw(cube); instrNum[0] = 2; instrNum[1] = -1; break;}
 		case "ucc" : {ucc(cube); instrNum[0] = 2; instrNum[1] = 1; break;}
 	}
+	console.log("Cube 2 " + cube);
 }
 function whiteFacingDown(cube, instructions)
 {
