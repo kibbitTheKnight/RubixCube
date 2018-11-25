@@ -489,7 +489,7 @@ function fcc(cube)
 {
 	//the order we will be looking at the sides 
 	//left, top, right, bottom, front
-	sides[0]=1; sides[1]=0; sides[2]=3; sides[3]=5; sides[4]=4;
+	sides[0]=1; sides[1]=0; sides[2]=3; sides[3]=5;
 	
 	//create copy of cube so it can be modified
 	var temp = copyArray(cube);
@@ -543,12 +543,12 @@ function fcc(cube)
 	}
 }
 
-//Back Clockwise -- not tested
+//Back Clockwise 
 function bcw(cube)
 {
 	//the order we will be looking at the sides 
 	//left, top, right, bottom, front
-	side[0]=1; side[1]=0; side[2]=3; side[3]=5; side[4]=4;
+	sides[0]=1; sides[1]=0; sides[2]=3; sides[3]=5; sides[4]=4;
 	
 	//create copy of cube so it can be modified
 	var temp = copyArray(cube);
@@ -560,27 +560,27 @@ function bcw(cube)
 			base=2;
 			for (j=0;j<3;j++){
 				//left <- bot
-				cube[side[0]][base-j][0]=temp[side[1]][j][2];
+				cube[sides[0]][j][0]=temp[sides[3]][2][j];
 			}
 		}
 		
 		if(i==1)
 			for (j=0;j<3;j++) {
 				//top <- left
-				cube[side[1]][j][0]=temp[side[0]][j][0];
+				cube[sides[1]][2][j]=temp[sides[0]][j][0];
 			}
 			
 		if(i==2)
 			base=2;
 			for(j=0;j<3;j++) {
 				//right <- top
-				cube[side[1]][base-j][2]=temp[side[1]][j][0];
+				cube[sides[2]][base-j][2]=temp[sides[1]][2][j];
 			}
 			
 		if (i==3) {
 			for (j=0;j<3;j++) {
 				//bot <-right
-				cube[side[3]][j][2]=temp[side[2]][j][2];
+				cube[sides[3]][2][2-j]=temp[sides[2]][j][2];
 			}
 		}
 		
@@ -589,19 +589,19 @@ function bcw(cube)
 	//create copy of cube so it can be modified
 	tempFaces = copyArray(cube);
 	for (i=0;i<3;i++){
-		add=2;
+		placeholder=2;
 		for (j=0;j<3;j++) {
-			cube[side[4]][j][i]=tempFaces[side[4]][j][i+add];
-			
+			cube[sides[4]][j][i]=tempFaces[sides[4]][j][placeholder];
+			placeholder--;
 		}
 		add--;
 	}
 }
-//Back Counterclockwise -- not tested
+//Back Counterclockwise 
 function bcc(cube)
 {
 	//left, top, right, bot, back
-	sides[0] = 1; sides[1] = 0; sides[2] = 3; sides[3] = 5; sides[3] = 4;
+	sides[0] = 1; sides[1] = 0; sides[2] = 3; sides[3] = 5; sides[4] = 4;
 	
 	//create copy of cube so it can be modified
 	var temp = copyArray(cube);
@@ -611,7 +611,7 @@ function bcc(cube)
 		if(i==0) {
 			for (j=0;j<3;j++){
 				//left <- top
-				cube[side[0]][j][0]=temp[side[1]][j][0];
+				cube[sides[0]][j][0]=temp[sides[1]][2][j];
 			}
 		}
 		
@@ -619,20 +619,19 @@ function bcc(cube)
 			base=2;
 			for (j=0;j<3;j++) {
 				//top <- right
-				cube[side[1]][base-j][0]=temp[side[2]][j][2];
+				cube[sides[1]][2][2-j]=temp[sides[2]][j][2];
 			}
 			
 		if(i==2)
 			for(j=0;j<3; j++) {
 				//right <-bot
-				cube[side[2]][j][2]=temp[side[3]][j][2];
+				cube[sides[2]][2-j][2]=temp[sides[3]][2][j];
 			}
 			
 		if (i==3) {
-			base=2;
 			for (j=0;j<3;j++) {
 				//bot <-left
-				cube[side[3]][base-j][2]=temp[side[1]][j][0];
+				cube[sides[3]][2][j]=temp[sides[0]][j][0];
 			}
 		}	
 	}
@@ -640,13 +639,13 @@ function bcc(cube)
 	//create copy of cube so it can be modified
 	tempFaces = copyArray(cube);
 	for (i=0;i<3;i++){
-		add=2;
+		placeholder=2;
 		for (j=0;j<3;j++) {
 			//i think this formula is wrong
 			
-			cube[side[4]][i][j]=tempFaces[side[4]][j+add][i];
+			cube[sides[4]][i][j]=tempFaces[sides[4]][j][placeholder];
 		}
-		add--;
+		placeholder--;
 	}
 }
 
