@@ -51,13 +51,15 @@
 			for(i = 0; i < 9; i++)
 			{
 				list.add(cube[turns[face][i]]);
-				cube.splice(turns[face][i], 1);
+				//cube.splice(turns[face][i], 1);
+				cube[turns[face][i]] = null;
 			}
 			console.log(list);
 			for(i = 0; i < 9; i++)
 			{
 				list.rotateOnAxis(axis, cc * r);
-				cube.splice(turns[face][i], 0, list.children[i]);
+				cube[turns[face][i]] = list.children[i];
+				//cube.splice(turns[face][i], 0, list.children[i]);
 				//list.remove(cube[turns[face][i]]);
 			}
 			for(i = 0; i < cube.length; i++)
