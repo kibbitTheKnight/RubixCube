@@ -55,10 +55,12 @@
 				cube[turns[face][i]] = null;
 			}
 			console.log(list);
+			list.rotateOnAxis(axis, cc * r);
 			for(i = 0; i < 9; i++)
 			{
-				list.rotateOnAxis(axis, cc * r);
+				
 				//cube[turns[face][i]] = list.children[i];
+				//cube.push(list.children[i]);
 				//cube.splice(turns[face][i], 0, list.children[i]);
 				//list.remove(cube[turns[face][i]]);
 			}
@@ -162,7 +164,7 @@
 			];
 			var cube = createCubes(scene, materials);
 			//console.log("Cube: " + cube);
-			var instruc = "rcc"; //tested: r, l, f, u, d, b
+			var instruc = "dcc"; //tested: r, l, f, u, d, b
 			var ins = new Array(2);
 			
 			
@@ -174,7 +176,7 @@
 			
 			console.log(ins[0]);
 			
-			rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+			rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/4, ins[1]);
 			
 			
 			/*instruc = "dcc";
