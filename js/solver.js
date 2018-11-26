@@ -701,8 +701,8 @@ function solve(cube, moves)
 		{
 			if(cube[5][2][1] == 4)
 			{
-				moves.push("bcw");
-				moves.push("bcw");
+				moves.push("fcw");
+				moves.push("fcw");
 			}
 		}
 		//if o != orange

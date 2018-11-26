@@ -52,7 +52,7 @@
 			{
 				list.add(cube[turns[face][i]]);
 				//cube.splice(turns[face][i], 1);
-				//cube[turns[face][i]] = null;
+				cube[turns[face][i]] = null;
 			}
 			console.log(list);
 			list.rotateOnAxis(axis, cc * r);
@@ -61,18 +61,33 @@
 				
 				//cube[turns[face][i]] = list.children[i];
 				//cube.push(list.children[i]);
-				console.log("List child: " + list.children[i]);
-				cube.splice(turns[face][i], 0, list.children[i]);
+				console.log(list.children[i]);
+				//cube.splice(turns[face][i], 0, list.children[i]);
 				//list.remove(cube[turns[face][i]]);
 			}
 			for(i = 0; i < cube.length; i++)
 			{
-				//console.log("CUBE: " + cube[i]);
+				console.log("CUBE: " + cube[i]);
 				scene.add(cube[i]);
 			}
-			//scene.add(list);
+			scene.add(list);
 			
 		
+		}
+		
+		function remakeCube(cube)
+		{
+			var turns = [];
+			turns.push(new Array(12));
+			//console.log(cube);
+			turns[4] = [8, 17, 26, 5, 14, 23, 2, 11, 20]; //front, green face
+			turns[5] = [24, 15, 6, 21, 12, 3, 18, 9, 0]; //back, blue face
+			turns[0] = [6, 7, 8, 3, 4, 5, 0, 1, 2]; //left, orange face
+			turns[1] = [26, 25 ,24, 23, 22, 21, 20, 19, 18]; //right, red face
+			turns[2] = [24, 25, 26, 15, 16, 17, 6, 7, 8]; //up, white face
+			turns[3] = [0, 1, 2, 9, 10, 11, 18, 19, 20]; //down, yellow face
+			
+			//turns[6] = [
 		}
 		function createCubes(scene, materials) 
 		{
