@@ -52,7 +52,7 @@
 			{
 				list.add(cube[turns[face][i]]);
 				//cube.splice(turns[face][i], 1);
-				cube[turns[face][i]] = null;
+				//cube[turns[face][i]] = null;
 			}
 			console.log(list);
 			list.rotateOnAxis(axis, cc * r);
@@ -61,14 +61,16 @@
 				
 				//cube[turns[face][i]] = list.children[i];
 				//cube.push(list.children[i]);
-				//cube.splice(turns[face][i], 0, list.children[i]);
+				console.log("List child: " + list.children[i]);
+				cube.splice(turns[face][i], 0, list.children[i]);
 				//list.remove(cube[turns[face][i]]);
 			}
 			for(i = 0; i < cube.length; i++)
 			{
+				//console.log("CUBE: " + cube[i]);
 				scene.add(cube[i]);
 			}
-			scene.add(list);
+			//scene.add(list);
 			
 		
 		}
@@ -164,7 +166,7 @@
 			];
 			var cube = createCubes(scene, materials);
 			//console.log("Cube: " + cube);
-			var instruc = "dcc"; //tested: r, l, f, u, d, b
+			var instruc = "fcc"; //tested: r, l, f, u, d, b
 			var ins = new Array(2);
 			
 			
