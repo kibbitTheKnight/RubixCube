@@ -18,61 +18,92 @@
 			turns[1] = [26, 25 ,24, 23, 22, 21, 20, 19, 18]; //right, red face
 			turns[2] = [24, 25, 26, 15, 16, 17, 6, 7, 8]; //up, white face
 			turns[3] = [0, 1, 2, 9, 10, 11, 18, 19, 20]; //down, yellow face
-			/*var list = new THREE.Object3D();
+			
+			var specificCubes = [];
+			
+			//var rotWorldMatrix;
+			console.log(cube);
 			for(i = 0; i < cube.length; i++)
 			{
+				if(face == 1)
+				{
+					if(cube[i].position.x > 0)
+					{
+						specificCubes.push(i);
+					}
+				}
+				else if(face == 2)
+				{
+					if(cube[i].position.y > 0)
+					{
+						console.log(cube[i]);
+						specificCubes.push(i);
+					}
+				}
+				else if(face == 3)
+				{
+					if(cube[i].position.y < 0)
+					{
+						specificCubes.push(i);
+					}
+				}
+				else if(face == 4)
+				{
+					if(cube[i].position.z > 0)
+					{
+						specificCubes.push(i);
+					}
+				}
+				else if(face == 5)
+				{
+					if(cube[i].position.z < 0)
+					{
+						specificCubes.push(i);
+					}
+				}
+				else if(face == 0)
+				{
+					if(cube[i].position.x < 0)
+					{
+						specificCubes.push(i);
+					}
+				}
 				scene.remove(cube[i]);
 			}
+			console.log(specificCubes);
 			for(i = 0; i < 9; i++)
 			{
-				//cube[turns[face][i]].rotateOnAxis(axis, cc * r);
-				/*cube[turns[face][i]].position.x += axis.x;
-				cube[turns[face][i]].position.y += axis.y;
-				cube[turns[face][i]].position.z += axis.z;
-				cube[turns[face][i]].rotation.x += (cc * r);
-				list.add(cube[turns[face][i]]);
-				console.log(cube[turns[face][i]]);
-			}
-			list.rotateOnAxis(axis, cc * r);
-			list.rotation.x = (cc * r);
-			for(i = 0; i < 9; i++)
-			{
-				list.remove(cube[turns[face][i]]);
+				calcRotationAroundAxis(cube[specificCubes[i]], axis, (cc * r));
+				cube[specificCubes[i]].rotateOnAxis(axis, cc * r);
 			}
 			for(i = 0; i < cube.length; i++)
 			{
 				scene.add(cube[i]);
-			}*/
-			for(i = 0; i < cube.length; i++)
-			{
-				scene.remove(cube[i]);
 			}
-			var list = new THREE.Object3D();
-			for(i = 0; i < 9; i++)
-			{
-				list.add(cube[turns[face][i]]);
-				//cube.splice(turns[face][i], 1);
-				cube[turns[face][i]] = null;
-			}
-			console.log(list);
-			list.rotateOnAxis(axis, cc * r);
-			for(i = 0; i < 9; i++)
-			{
-				
-				//cube[turns[face][i]] = list.children[i];
-				//cube.push(list.children[i]);
-				console.log(list.children[i]);
-				//cube.splice(turns[face][i], 0, list.children[i]);
-				//list.remove(cube[turns[face][i]]);
-			}
-			for(i = 0; i < cube.length; i++)
-			{
-				console.log("CUBE: " + cube[i]);
-				scene.add(cube[i]);
-			}
-			scene.add(list);
 			
 		
+		}
+		
+		function calcRotationAroundAxis( obj3D, axis, angle )
+		{
+
+			var euler;
+		
+			if ( Math.abs(axis.x) == 1 )
+			{
+				euler = new THREE.Euler( angle, 0, 0, 'XYZ' );      
+			}
+		
+			if ( Math.abs(axis.y) == 1 )
+			{
+				euler = new THREE.Euler( 0, angle, 0, 'XYZ' );              
+			}
+		
+			if ( Math.abs(axis.z) == 1 )
+			{
+				euler = new THREE.Euler( 0, 0, angle, 'XYZ' );      
+			}
+			obj3D.position.applyEuler( euler );
 		}
 		
 		function remakeCube(cube)
@@ -181,8 +212,11 @@
 			];
 			var cube = createCubes(scene, materials);
 			//console.log("Cube: " + cube);
-			var instruc = "fcc"; //tested: r, l, f, u, d, b
+			var instruc = "rcc"; //tested: r, l, f, u, d, b
 			var ins = new Array(2);
+			
+			var axesHelper = new THREE.AxesHelper( 3 );
+			scene.add( axesHelper );
 			
 			
 			var jsCube = createJSCube();
@@ -193,13 +227,13 @@
 			
 			console.log(ins[0]);
 			
-			rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/4, ins[1]);
+			rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
 			
 			
-			/*instruc = "dcc";
+			instruc = "dcc";
 			convertInstruction(jsCube, instruc, ins);
 			rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
-			console.log(jsCube);*/
+			console.log(jsCube);
 			
 			
 			/*var moves = [];
