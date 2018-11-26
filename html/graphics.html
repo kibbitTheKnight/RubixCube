@@ -58,7 +58,7 @@
 			for(i = 0; i < 9; i++)
 			{
 				list.rotateOnAxis(axis, cc * r);
-				cube[turns[face][i]] = list.children[i];
+				//cube[turns[face][i]] = list.children[i];
 				//cube.splice(turns[face][i], 0, list.children[i]);
 				//list.remove(cube[turns[face][i]]);
 			}
@@ -66,7 +66,7 @@
 			{
 				scene.add(cube[i]);
 			}
-			//scene.add(list);
+			scene.add(list);
 			
 		
 		}

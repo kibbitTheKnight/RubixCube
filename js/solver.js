@@ -676,6 +676,57 @@ function bcc(cube)
 
 //solving
 
+//full solution
+function solve(cube, moves)
+{
+	//white side
+	//get white cross
+	for(i = 0; i < 4; i++)
+	{
+		/*
+		 Cube looks like:	x b x
+							o 0 r
+							x g x
+		 
+		 Where x is anything
+		 b must be blue (4)
+		 o must be orange (1)
+		 r must be red (3)
+		 g must be green (2)
+		 
+		*/
+		
+		//if b != blue
+		if(cube[0][0][1] != 4)
+		{
+			if(cube[5][2][1] == 4)
+			{
+				moves.push("bcw");
+				moves.push("bcw");
+			}
+		}
+		//if o != orange
+		if(cube[0][1][0] != 1)
+		{
+			
+		}
+		//if r != red
+		if(cube[0][1][2] != 3)
+		{
+			
+		}
+		//if g != green
+		if(cube[0][2][1] != 2)
+		{
+			
+		}
+	}
+	
+	//sides
+	
+	//yellow side
+}
+
 //solving white face
 function convertInstruction(cube, instruction, instrNum)
 {
