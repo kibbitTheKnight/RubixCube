@@ -739,8 +739,8 @@ function convertInstruction(cube, instruction, instrNum)
 		case "fcc" : {fcc(cube); instrNum[0] = 4; instrNum[1] = 1; break;}
 		case "lcw" : {lcw(cube); instrNum[0] = 0; instrNum[1] = 1; break;}
 		case "lcc" : {lcc(cube); instrNum[0] = 0; instrNum[1] = -1; break;}
-		case "rcw" : {rcw(cube); instrNum[0] = 1; instrNum[1] = 1; break;}
-		case "rcc" : {rcc(cube); instrNum[0] = 1; instrNum[1] = -1; break;}
+		case "rcw" : {rcw(cube); instrNum[0] = 1; instrNum[1] = -1; break;}
+		case "rcc" : {rcc(cube); instrNum[0] = 1; instrNum[1] = 1; break;}
 		case "dcw" : {dcw(cube); instrNum[0] = 3; instrNum[1] = 1; break;}
 		case "dcc" : {dcc(cube); instrNum[0] = 3; instrNum[1] = -1; break;}
 		case "bcw" : {bcw(cube); instrNum[0] = 5; instrNum[1] = 1; break;}
