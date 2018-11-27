@@ -727,6 +727,59 @@ function solve(cube, moves)
 	//yellow side
 }
 
+function step3(cube, moves)
+{
+	//loop until two layers are solved
+	rows = []; rows.push(0); rows.push(1); rows.push(1); rows.push(2);
+	cols = []; cols.push(1); cols.push(0); cols.push(2); cols.push(1);
+	
+	while(!winCondition(cube, 3))
+	{
+		//loop through orange, green, red, and blue
+		for(i = 1; i < 5; i++)
+		{
+			var left = (i == 1 ? 4 : (i - 1)); 	// face to the left
+			var right = (i == 4 ? 1 : (i + 1)); // face to the right
+			//if the box above the face matches the face, and its top is the color to the left, use the left algorithm
+			if(cube[i][0][1] == f && cube[5][rows[i]][cols[i]] == left)
+			{
+				leftCenter(moves);
+			}
+			//if the box above the face matches the face, and its top is the color to the right, use the right algorithm
+			if(cube[i][0][1] == f && cube[5][rows[i]][cols[i]] == right)
+			{
+				rightCenter(moves);
+			}
+			
+		}
+	}
+}
+
+function winCondition(cube, step)
+{
+	//check that all sides except for yellow are solved
+	if(step == 3)
+	{
+		//check that the first two layers of the cube are solved
+		for(f = 0; f < 5; f++)
+		{
+			var rFin = (f == 0 ? 3 : 2);
+			for(r = 0; r < rFin; r++)
+			{
+				for(c = 0; c < 3; c++)
+				{
+					if(cube[f][r][c] != f)
+					{
+						return false;
+					}
+				}
+			}
+		}
+	}
+	
+	return true;
+}
+
 //solving white face
 function convertInstruction(cube, instruction, instrNum)
 {
@@ -778,27 +831,27 @@ function finishFace(cube)
 }
 
 //solving center layer
-function leftCenter(cube)
+function leftCenter(instructions)
 {
-	instructions.push("ucc");
-	instructions.push("lcc");
-	instructions.push("ucw");
-	instructions.push("lcw");
-	instructions.push("ucw");
-	instructions.push("fcw");
-	instructions.push("ucc");
-	instructions.push("fcc");
+	instructions.push("dcw"); //ucc == dcw
+	instructions.push("rcc"); //lcc == rcc
+	instructions.push("dcc"); //ucw == dcc
+	instructions.push("rcw"); //lcw == rcw
+	instructions.push("dcc");
+	instructions.push("fcw"); //fcw == fcw
+	instructions.push("dcw");
+	instructions.push("fcc"); //fcc == fcc
 }
 
-function leftCenter(cube)
+function rightCenter(instructions)
 {
-	instructions.push("ucw");
-	instructions.push("rcw");
-	instructions.push("ucc");
-	instructions.push("rcc");
-	instructions.push("ucc");
+	instructions.push("dcc");
+	instructions.push("lcw"); //rcw == lcw
+	instructions.push("dcw");
+	instructions.push("lcc"); //rcc == lcc
+	instructions.push("dcw");
 	instructions.push("fcc");
-	instructions.push("ucw");
+	instructions.push("dcc");
 	instructions.push("fcw");
 }
 
