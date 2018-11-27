@@ -91,9 +91,8 @@
 					{
 						if (pos.y > 0) // is positive
 						{
-							rotation.makeRotationAxis(yaxis.normalize(),rotInRads);
-							e.applyMatrix(rotation);
-							// e.rotateOnWorldAxis(yaxis,rotInRads);
+							rotation.makeRotationAxis(yaxis.normalize(),rotInRads); // create the rotation
+							e.applyMatrix(rotation); // apply the rotation.
 						}
 					}
 					else if (command[0] === 2) // slice is on the origin
