@@ -90,32 +90,34 @@
 		
 		}
 		
-		function calcRotationAroundAxis( obj3D, axis, angle )
+		function calcRotationAroundAxis(cube, axis, angle)
 		{
 
 			var euler;
 		
-			if ( Math.abs(axis.x) == 1 )
+			if(Math.abs(axis.x) == 1)
 			{
-				euler = new THREE.Euler( angle, 0, 0, 'XYZ' ); 
+				euler = new THREE.Euler(angle, 0, 0); 
 			}
 		
-			if ( Math.abs(axis.y) == 1 )
+			if(Math.abs(axis.y) == 1)
 			{
-				euler = new THREE.Euler( 0, angle, 0, 'XYZ' ); 			
+				euler = new THREE.Euler(0, angle, 0); 			
 			}
 		
-			if ( Math.abs(axis.z) == 1 )
+			if(Math.abs(axis.z) == 1)
 			{
-				euler = new THREE.Euler( 0, 0, angle, 'XYZ' ); 
+				euler = new THREE.Euler(0, 0, angle); 
 			}
-			obj3D.position.applyEuler( euler );
+			cube.position.applyEuler(euler);
 		}
 		function rotateAroundWorldAxis(cube, axis, rotate) 
 		{
 			let rotWorldMatrix = new THREE.Matrix4();
+			
 			rotWorldMatrix.makeRotationAxis(axis.normalize(), rotate);
 			rotWorldMatrix.multiply(cube.matrix);
+			
 			cube.matrix = rotWorldMatrix;
 			cube.setRotationFromMatrix(cube.matrix);
 		}
