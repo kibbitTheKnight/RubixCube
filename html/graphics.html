@@ -121,10 +121,9 @@
 			cube.matrix = rotWorldMatrix;
 			cube.setRotationFromMatrix(cube.matrix);
 		}
-		function createCubes(scene, materials) 
+		function createCubes(scene, materials, edges) 
 		{
 			var cubes = [];
-			var edges = [];
 			for (var x = 0; x < 3; x++) 
 			{
 				for (var y = 0; y < 3; y++) 
@@ -185,6 +184,7 @@
 			let backLight = new THREE.DirectionalLight(0xffffff, 0.5);
 			backLight.position.set(0.5, -0.5, -1).normalize();
 			var ambientLight = new THREE.AmbientLight( 0x404040 );
+			
 			scene.add(keyLight);
 			scene.add(fillLight);
 			scene.add(backLight);
@@ -211,11 +211,16 @@
 				new THREE.MeshBasicMaterial({color: 0x26b143}), // blue
 				new THREE.MeshBasicMaterial({color: 0x2f55cf}), // green
 			];
-			var cube = createCubes(scene, materials);
-			//console.log("Cube: " + cube);
-			var instruc = []; //"flipu"; //tested: r, l, f, u, d, b
+			
+			//create cube
+			var edges = [];
+			var cube = createCubes(scene, materials, edges);
+			
+			//create arrays for instructions
+			var instruc = [];
 			var ins = new Array(3);
 			
+			//add axis for help in orienting
 			var axesHelper = new THREE.AxesHelper( 3 );
 			scene.add( axesHelper );
 
@@ -345,6 +350,11 @@
 				convertInstruction("flipu", ins);
 				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
+			document.getElementById("flips").addEventListener("click", function step1()
+			{
+				convertInstruction("flips", ins);
+				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
+			});
 			document.getElementById("flipr").addEventListener("click", function step1()
 			{
 				convertInstruction("flipr", ins);
@@ -440,8 +450,6 @@
 				
 			//controls
 			let cameraControl= new THREE.OrbitControls( camera );
-			//cameraControl.addEventListener( 'change', render );
-			//cameraControl.addEventListener( 'change', rotate(4, cube, axis[4], scene) );
 			render();
 		}
 		</script>
@@ -467,6 +475,7 @@
 			<button type = "button" onclick = "" id = "flipu"> Flip Upside Down </button>
 			<button type = "button" onclick = "" id = "flipr"> Flip Right </button>
 			<button type = "button" onclick = "" id = "flipl"> Flip Left </button>
+			<button type = "button" onclick = "" id = "flips"> Flip Onto Side </button>
 		</div>
 		<div id = "firstLayer">
 			<button type = "button" onclick = "" id = "whiteDown"> White Side Facing Down </button>
