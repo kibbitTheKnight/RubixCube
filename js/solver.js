@@ -903,6 +903,7 @@ function convertInstruction(instruction, instrNum)
 		case "flipr" : {instrNum[0] = 2; instrNum[1] = 1; instrNum[2] = 10; break;}
 		case "flipl" : {instrNum[0] = 2; instrNum[1] = -1; instrNum[2] = 10; break;}
 		case "flipu" : {instrNum[0] = 1; instrNum[1] = 1; instrNum[2] = 11; break;}
+		case "flips" : {instrNum[0] = 1; instrNum[1] = 1; instrNum[2] = 10; break;}
 	}
 }
 
