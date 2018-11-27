@@ -22,7 +22,6 @@
 			var specificCubes = [];
 			
 			//var rotWorldMatrix;
-			console.log(cube);
 			for(i = 0; i < cube.length; i++)
 			{
 				if(face == 1)
@@ -36,7 +35,6 @@
 				{
 					if(cube[i].position.y > safeNum)
 					{
-						console.log(cube[i]);
 						specificCubes.push(i);
 					}
 				}
@@ -75,11 +73,6 @@
 			{
 				calcRotationAroundAxis(cube[specificCubes[i]], axis, (cc * r));	
 				cube[specificCubes[i]].rotateOnWorldAxis(axis, cc * r);
-				
-				/*if(cube[specificCubes[i]] != null)
-				{
-					calcRotationAroundAxis(cube[specificCubes[i]], axis, r);
-				}*/
 			}
 			for(i = 0; i < cube.length; i++)
 			{
@@ -97,20 +90,16 @@
 			if ( Math.abs(axis.x) == 1 )
 			{
 				euler = new THREE.Euler( angle, 0, 0, 'XYZ' ); 
-				//obj3D.rotateX(angle);
 			}
 		
 			if ( Math.abs(axis.y) == 1 )
 			{
-				euler = new THREE.Euler( 0, angle, 0, 'XYZ' ); 
-				//obj3D.rotateY(angle);		
-				//calcRotationAroundAxis(cube[specificCubes[i]], axis, (cc * r));				
+				euler = new THREE.Euler( 0, angle, 0, 'XYZ' ); 			
 			}
 		
 			if ( Math.abs(axis.z) == 1 )
 			{
 				euler = new THREE.Euler( 0, 0, angle, 'XYZ' ); 
-				//obj3D.rotateZ(angle);
 			}
 			obj3D.position.applyEuler( euler );
 		}
@@ -225,17 +214,9 @@
 			
 			
 			//convertInstruction(jsCube, instruc, ins);
-			console.log(jsCube);
-			
-			console.log(ins[0]);
 			
 			//rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
 			
-			
-			/*instruc = "lcc";
-			convertInstruction(jsCube, instruc, ins);
-			rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
-			console.log(jsCube);*/
 			
 			
 			var moves = [];
@@ -248,15 +229,6 @@
 				rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
 				console.log(jsCube);
 			}
-			
-			//console.log(jsCube);
-			
-			//console.log(ins);
-			
-			//var rotAmount = 0;
-			//rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
-			//rotateCube(rotAmount, cube, axis[rotAmount], scene, Math.PI/2);
-			//render();
 			
 			//animation function
 			function render()

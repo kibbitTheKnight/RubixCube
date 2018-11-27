@@ -750,6 +750,16 @@ function step3(cube, moves)
 			{
 				rightCenter(moves);
 			}
+			//if the cube is upside down
+			if(cube[i][0][1] == left && cube[5][rows[i]][cols[i]] == f)
+			{
+				moves.push("dcc");
+			}
+			//if the cube is upside down
+			if(cube[i][0][1] == right && cube[5][rows[i]][cols[i]] == f)
+			{
+				moves.push("dcw");
+			}
 			
 		}
 	}
@@ -783,7 +793,6 @@ function winCondition(cube, step)
 //solving white face
 function convertInstruction(cube, instruction, instrNum)
 {
-	console.log("Cube " + cube);
 	temp = copyArray(cube);
 	//console.log(instruction);
 	switch(instruction)
@@ -801,8 +810,30 @@ function convertInstruction(cube, instruction, instrNum)
 		case "ucw" : {ucw(cube); instrNum[0] = 2; instrNum[1] = -1; break;}
 		case "ucc" : {ucc(cube); instrNum[0] = 2; instrNum[1] = 1; break;}
 	}
-	console.log("Cube 2 " + cube);
 }
+
+function move(cube, moves)
+{
+	for(i = 0; i < moves.length; i++)
+	{
+		switch(instruction)
+		{
+			case "fcw" : {fcw(cube); break;}
+			case "fcc" : {fcc(cube); break;}
+			case "lcw" : {lcw(cube); break;}
+			case "lcc" : {lcc(cube); break;}
+			case "rcw" : {rcw(cube); break;}
+			case "rcc" : {rcc(cube); break;}
+			case "dcw" : {dcw(cube); break;}
+			case "dcc" : {dcc(cube); break;}
+			case "bcw" : {bcw(cube); break;}
+			case "bcc" : {bcc(cube); break;}
+			case "ucw" : {ucw(cube); break;}
+			case "ucc" : {ucc(cube); break;}
+		}
+	}
+}
+
 function whiteFacingDown(cube, instructions)
 {
 	instructions.push("fcw");
