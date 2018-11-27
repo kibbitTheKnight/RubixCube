@@ -4,8 +4,161 @@
 	<title>Final Project: Rubix Cube Solver</title>
 	<script src="https://threejs.org/build/three.js"></script>
 	<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
-	<script src = "../js/solver.js" </script></script>
+	<script src="../js/solver.js"</script></script>
 	<script>
+	function eulerRotation(cube,command,angle)
+	{
+		// get the rotation sign and calculate the rotation
+        const rotInRads = (command[1] === 1 ? angle : -angle);
+		// var rotation = new THREE.Euler();
+		var axis = [0, 0, 0];
+		var designator = 0;
+
+		switch(command[0])
+		{
+		    // rotate about the y-axis
+			case 1 :
+				{
+					axis[0] = 1;
+					designator = 1; // all y values are positive
+					break;
+				}
+			case 2 :
+				{
+					axis[0] = 1;
+					designator = 0; // all y values are 0
+					break;
+				}
+			case 3 :
+				{
+					axis[0] = 1;
+					designator = -1; // all y values are negative
+					break;
+				}
+			// rotate about the x-axis
+			case 4 :
+				{
+					axis[1] = 1;
+					designator = -1; // all x values are negative
+					break;
+				}
+			case 5 :
+				{
+					axis[1] = 1;
+					designator = 0; // all x values are 0
+					break;
+				}
+			case 6 :
+				{
+					axis[1] = 1;
+					designator = 1; // all x values are positive
+					break;
+				}
+			//rotate about the z-axis
+            case 7 :
+				{
+					designator = -1; // all z values are negative
+					axis[2] = 1;
+					break;
+				}
+            case 8 :
+				{
+					axis[2] = 1;
+					designator = 0; // all z values are 0
+					break;
+				}
+            case 9 :
+                {
+				axis[2] = 1;
+				designator = 1; // all z values are positive
+                break;
+            	}
+			default:
+				console.log("invalid command");
+				return
+		}
+
+		switch (axis.indexOf(1))
+		{
+		    // rotation about the y-axis by 90 degrees
+			case 0:
+			{
+				yaxis = new THREE.Vector3(0,1,0);
+                rotation = new THREE.Matrix4();
+				cube.forEach(function(e){
+					pos = e.position;
+					if (command[0] === 1) //slice is above the origin
+					{
+						if (pos.y > 0) // is positive
+						{
+							rotation.makeRotationAxis(yaxis.normalize(),rotInRads);
+							e.applyMatrix(rotation);
+							// e.rotateOnWorldAxis(yaxis,rotInRads);
+						}
+					}
+					else if (command[0] === 2) // slice is on the origin
+					{
+						// todo: implement this but don't readily need it yet.
+					}
+					else //slice is below the origin
+					{
+						if (pos.y < 0) // is negative
+						{
+							e.rotateOnWorldAxis(yaxis,rotInRads);
+						}
+					}
+				});
+
+                break;
+			}
+			// rotation about the x-axis by 90 degrees
+			case 1:
+			{
+			    xaxis = new THREE.Vector3(1,0,0);
+			    cube.forEach(function(e){
+                    pos = e.position;
+                    if (command[0] === 4) //slice is left of origin
+                    {
+                        if (pos.x < 0) // is positive
+                        {
+                            e.rotateOnWorldAxis(xaxis,rotInRads);
+                        }
+                    }
+                    else if (command[0] === 5) // slice is on the origin
+                    {
+                        // todo: implement this but don't readily need it yet.
+                    }
+                    else //slice is right of origin
+                    {
+                        if (pos.x > 0) // is negative
+                        {
+                            e.rotateOnWorldAxis(xaxis,rotInRads);
+                        }
+                    }
+				});
+			    break;
+			}
+			// rotation about the z-axis by 90 degrees
+			case 2:
+			{
+			    break;
+			}
+			default:
+			    console.log("invalid axis!!!!");
+			    return;
+		}
+	}
+
+	function rotateAroundWorldAxis(object, axis, radians)
+	{
+        rotWorldMatrix = new THREE.Matrix4();
+        rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
+        rotWorldMatrix.multiplySelf(object.matrix);        // pre-multiply
+        object.matrix = rotWorldMatrix;
+        object.rotation.getRotationFromMatrix(object.matrix, object.scale);
+	}
+
+
 	function rotateCube(face, cube, axis, scene, r, cc)
 		{
 			var turns = [];
@@ -46,7 +199,7 @@
 			{
 				scene.remove(cube[i]);
 			}
-			var list = new THREE.Object3D();
+			var list = new THREE.Group();
 			for(i = 0; i < 9; i++)
 			{
 				list.add(cube[turns[face][i]]);
@@ -55,7 +208,7 @@
 			console.log(list);
 			for(i = 0; i < 9; i++)
 			{
-				list.rotateOnAxis(axis, cc * r);
+				list.rotateOnWorldAxis(axis, cc * r);
 				cube.splice(turns[face][i], 0, list.children[i]);
 				//list.remove(cube[turns[face][i]]);
 			}
@@ -69,6 +222,7 @@
 		}
 		function createCubes(scene, materials) 
 		{
+
 			var cubes = [];
 			var edges = [];
 			for (var x = 0; x < 3; x++) 
@@ -105,7 +259,37 @@
 			
 			return cubes;
 		}
-	</script>
+
+		function showAxis(scene)
+		{
+		    var xMaterial = new THREE.LineBasicMaterial({color: 0x2f55cf, linewidth: 2}); //green
+            var yMaterial = new THREE.LineBasicMaterial({color: 0xff7800, linewidth: 2}); //red
+            var zMaterial = new THREE.LineBasicMaterial({color: 0x26b143, linewidth: 2}); //blue
+
+			var xGeo = new THREE.Geometry();
+			xGeo.vertices.push(new THREE.Vector3(0,0,0));
+            xGeo.vertices.push(new THREE.Vector3(10,0,0));
+            xGeo.vertices.push(new THREE.Vector3(-10,0,0));
+
+            var yGeo = new THREE.Geometry();
+            yGeo.vertices.push(new THREE.Vector3(0,0,0));
+            yGeo.vertices.push(new THREE.Vector3(0,10,0));
+            yGeo.vertices.push(new THREE.Vector3(0,-10,0));
+
+            var zGeo = new THREE.Geometry();
+            zGeo.vertices.push(new THREE.Vector3(0,0,0));
+            zGeo.vertices.push(new THREE.Vector3(0,0,10));
+            zGeo.vertices.push(new THREE.Vector3(0,0,-10));
+
+            xline = new THREE.Line(xGeo, xMaterial);
+            yline = new THREE.Line(yGeo, yMaterial);
+            zline = new THREE.Line(zGeo, zMaterial);
+
+            scene.add(xline);
+            scene.add(yline);
+            scene.add(zline);
+		}
+	</script>zGeo
 	
 	<script>
 		function mainFunction()
@@ -137,15 +321,17 @@
 			scene.add(ambientLight);
 			
 			//define axes
-			var axis = [];
-			axis.push(new Array(6));
-			
-			axis[0] = new THREE.Vector3(1, 0, 0);
-			axis[1] = new THREE.Vector3(-1, 0, 0);
-			axis[2] = new THREE.Vector3(0, 1, 0);
-			axis[3] = new THREE.Vector3(0, -1, 0);
-			axis[4] = new THREE.Vector3(0, 0, 1);
-			axis[5] = new THREE.Vector3(0, 0, -1);
+
+            var axis = [];
+            axis.push(new Array(6));
+
+            axis[0] = new THREE.Vector3(1, 0, 0);
+            axis[1] = new THREE.Vector3(-1, 0, 0);
+            axis[2] = new THREE.Vector3(0, 1, 0);
+            axis[3] = new THREE.Vector3(0, -1, 0);
+            axis[4] = new THREE.Vector3(0, 0, 1);
+            axis[5] = new THREE.Vector3(0, 0, -1);
+			showAxis(scene);
 			
 			//create cubes
 			var materials = 
@@ -158,71 +344,29 @@
 				new THREE.MeshBasicMaterial({color: 0x2f55cf}), // green
 			];
 			var cube = createCubes(scene, materials);
-			//console.log("Cube: " + cube);
-			var instruc = "rcc"; //tested: r, l, f, u, d, b
-			var ins = new Array(2);
-			
 			
 			var jsCube = createJSCube();
-			
-			
-			convertInstruction(jsCube, instruc, ins);
-			console.log(jsCube);
-			
-			console.log(ins[0]);
-			
-			rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
-			
-			
-			/*instruc = "dcc";
-			convertInstruction(jsCube, instruc, ins);
-			rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
-			console.log(jsCube);*/
-			
-			
-			/*var moves = [];
-			scrambleCube(moves, 2);
-			console.log(moves);
-			
-			for(h = 0; h < moves.length; h++)
-			{
-				//convertInstruction(jsCube, moves[h], ins);
-				//rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
-				//console.log(jsCube);
-			}*/
-			
-			//console.log(jsCube);
-			
-			//console.log(ins);
-			
-			//var rotAmount = 0;
-			//rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
-			//rotateCube(rotAmount, cube, axis[rotAmount], scene, Math.PI/2);
-			//render();
-			rotAmount = 0;
-			//rotateCube(rotAmount, cube, axis[rotAmount], scene, Math.PI/2);
-			
+
+
+			var rotate = false;
+			counter = 0;
+			myAngle = (Math.PI/2)/60;
 			//animation function
 			function render()
 			{
-				requestAnimationFrame(render); 
+				requestAnimationFrame(render);
 				renderer.render( scene, camera );
-				//console.log(moves);
-				/*for(h = 0; h < moves.length; h++)
-				{
-					convertInstruction(jsCube, moves[h], ins);
-					for(f = 0; f <= Math.PI / 2; f += (Math.PI / 12800))
-					{
-						rotateCube(ins[0], cube, axis[ins[0]], scene, f, ins[1]);
-					}
-					console.log(jsCube);
-				}*/
-			};
+                eulerRotation(cube,[1,1],myAngle);
+				// if(counter <= 60)
+				// {
+                 //    eulerRotation(cube,[1,1],myAngle);
+                 //    counter++;
+				// }
+
+			}
 				
 			//controls
 			let cameraControl= new THREE.OrbitControls( camera );
-			//cameraControl.addEventListener( 'change', render );
-			//cameraControl.addEventListener( 'change', rotate(4, cube, axis[4], scene) );
 			render();
 		}
 		</script>
