@@ -674,6 +674,58 @@ function bcc(cube)
 	}
 }
 
+function flipr(cube)
+{
+	temp = copyArray(cube);
+	for(i = 0; i < 4; i++)
+	{
+		if(i == 0)
+		{
+			cube[i + 1] = temp[4];
+		}
+		else
+		{
+			cube[i + 1] = temp[i];
+		}
+	}
+}
+
+function flipl(cube)
+{
+	temp = copyArray(cube);
+	for(i = 1; i < 5; i++)
+	{
+		if(i == 4)
+		{
+			cube[i] = temp[1];
+		}
+		else
+		{
+			cube[i] = temp[i + 1];
+		}
+	}
+}
+
+function flipu(cube)
+{
+	temp = copyArray(cube);
+	cube[0] = temp[5];
+	cube[5] = temp[0];
+	cube[2] = temp[4];
+	cube[4] = temp[2];
+	
+	for(i = 1; i < 5; i++)
+	{
+		for(r = 0; r < 3; r++)
+		{
+			for(c = 0; c < 3; c++)
+			{
+				cube[i][c][r] = temp[i][2 - r][2 - c];
+			}
+		}
+	}
+}
+
 //solving
 
 //full solution
@@ -733,32 +785,72 @@ function step3(cube, moves)
 	rows = []; rows.push(0); rows.push(1); rows.push(1); rows.push(2);
 	cols = []; cols.push(1); cols.push(0); cols.push(2); cols.push(1);
 	
+	//flip cube upside down
+	moves.push("flipu");
+	
+	instructs.push("flipu");
+	move(cube, instructs);
+	instructs.splice(0, instructs.length);
+	
+	//make orange face front
+	moves.push("flipr");
+	
+	instructs.push("flipr");
+	move(cube, instructs);
+	instructs.splice(0, instructs.length);
+	
+	//loop until win condition is met
 	while(!winCondition(cube, 3))
 	{
 		//loop through orange, green, red, and blue
 		for(i = 1; i < 5; i++)
 		{
+			var instructs = [];
 			var left = (i == 1 ? 4 : (i - 1)); 	// face to the left
 			var right = (i == 4 ? 1 : (i + 1)); // face to the right
 			//if the box above the face matches the face, and its top is the color to the left, use the left algorithm
 			if(cube[i][0][1] == f && cube[5][rows[i]][cols[i]] == left)
 			{
+				//add moves
 				leftCenter(moves);
+				
+				//move cube
+				leftCenter(instructs);
+				move(cube, instructs);
+				instructs.splice(0, instructs.length);
 			}
 			//if the box above the face matches the face, and its top is the color to the right, use the right algorithm
 			if(cube[i][0][1] == f && cube[5][rows[i]][cols[i]] == right)
 			{
+				//add moves
 				rightCenter(moves);
+				
+				//move cube
+				rightCenter(instructs);
+				move(cube, instructs);
+				instructs.splice(0, instructs.length);
 			}
 			//if the cube is upside down
 			if(cube[i][0][1] == left && cube[5][rows[i]][cols[i]] == f)
 			{
-				moves.push("dcc");
+				//add moves
+				moves.push("ucw");
+				
+				//move cube
+				instructs.push("ucw");
+				move(cube, instructs);
+				instructs.splice(0, instructs.length);
 			}
 			//if the cube is upside down
 			if(cube[i][0][1] == right && cube[5][rows[i]][cols[i]] == f)
 			{
-				moves.push("dcw");
+				//add moves
+				moves.push("ucc");
+				
+				//move cube
+				instructs.push("ucc");
+				move(cube, instructs);
+				instructs.splice(0, instructs.length);
 			}
 			
 		}
@@ -791,28 +883,52 @@ function winCondition(cube, step)
 }
 
 //solving white face
-function convertInstruction(cube, instruction, instrNum)
+function convertInstruction(instruction, instrNum)
 {
-	temp = copyArray(cube);
 	//console.log(instruction);
 	switch(instruction)
 	{
-		case "fcw" : {fcw(cube); instrNum[0] = 4; instrNum[1] = -1; break;}
-		case "fcc" : {fcc(cube); instrNum[0] = 4; instrNum[1] = 1; break;}
-		case "lcw" : {lcw(cube); instrNum[0] = 0; instrNum[1] = 1; break;}
-		case "lcc" : {lcc(cube); instrNum[0] = 0; instrNum[1] = -1; break;}
-		case "rcw" : {rcw(cube); instrNum[0] = 1; instrNum[1] = -1; break;}
-		case "rcc" : {rcc(cube); instrNum[0] = 1; instrNum[1] = 1; break;}
-		case "dcw" : {dcw(cube); instrNum[0] = 3; instrNum[1] = 1; break;}
-		case "dcc" : {dcc(cube); instrNum[0] = 3; instrNum[1] = -1; break;}
-		case "bcw" : {bcw(cube); instrNum[0] = 5; instrNum[1] = 1; break;}
-		case "bcc" : {bcc(cube); instrNum[0] = 5; instrNum[1] = -1; break;}
-		case "ucw" : {ucw(cube); instrNum[0] = 2; instrNum[1] = -1; break;}
-		case "ucc" : {ucc(cube); instrNum[0] = 2; instrNum[1] = 1; break;}
+		case "fcw" : {instrNum[0] = 4; instrNum[1] = -1; instrNum[2] = 4; break;}
+		case "fcc" : {instrNum[0] = 4; instrNum[1] = 1; instrNum[2] = 4; break;}
+		case "lcw" : {instrNum[0] = 0; instrNum[1] = 1; instrNum[2] = 0; break;}
+		case "lcc" : {instrNum[0] = 0; instrNum[1] = -1; instrNum[2] = 0; break;}
+		case "rcw" : {instrNum[0] = 1; instrNum[1] = -1; instrNum[2] = 1; break;}
+		case "rcc" : {instrNum[0] = 1; instrNum[1] = 1; instrNum[2] = 1; break;}
+		case "dcw" : {instrNum[0] = 3; instrNum[1] = 1; instrNum[2] = 3; break;}
+		case "dcc" : {instrNum[0] = 3; instrNum[1] = -1; instrNum[2] = 3; break;}
+		case "bcw" : {instrNum[0] = 5; instrNum[1] = 1; instrNum[2] = 5; break;}
+		case "bcc" : {instrNum[0] = 5; instrNum[1] = -1; instrNum[2] = 5; break;}
+		case "ucw" : {instrNum[0] = 2; instrNum[1] = -1; instrNum[2] = 2; break;}
+		case "ucc" : {instrNum[0] = 2; instrNum[1] = 1; instrNum[2] = 2; break;}
+		case "flipr" : {instrNum[0] = 2; instrNum[1] = 1; instrNum[2] = 10; break;}
+		case "flipl" : {instrNum[0] = 2; instrNum[1] = -1; instrNum[2] = 10; break;}
+		case "flipu" : {instrNum[0] = 1; instrNum[1] = 1; instrNum[2] = 11; break;}
 	}
 }
 
-function move(cube, moves)
+function move(cube, move)
+{
+	switch(instruction)
+	{
+		case "fcw" : {fcw(cube); break;}
+		case "fcc" : {fcc(cube); break;}
+		case "lcw" : {lcw(cube); break;}
+		case "lcc" : {lcc(cube); break;}
+		case "rcw" : {rcw(cube); break;}
+		case "rcc" : {rcc(cube); break;}
+		case "dcw" : {dcw(cube); break;}
+		case "dcc" : {dcc(cube); break;}
+		case "bcw" : {bcw(cube); break;}
+		case "bcc" : {bcc(cube); break;}
+		case "ucw" : {ucw(cube); break;}
+		case "ucc" : {ucc(cube); break;}
+		case "flipr" : {flipr(cube); break;}
+		case "flipl" : {flipl(cube); break;}
+		case "flipu" : {flipu(cube); break;}
+	}
+}
+
+function moveList(cube, moves)
 {
 	for(i = 0; i < moves.length; i++)
 	{
@@ -830,30 +946,33 @@ function move(cube, moves)
 			case "bcc" : {bcc(cube); break;}
 			case "ucw" : {ucw(cube); break;}
 			case "ucc" : {ucc(cube); break;}
+			case "flipr" : {flipr(cube); break;}
+			case "flipl" : {flipl(cube); break;}
+			case "flipu" : {flipu(cube); break;}
 		}
 	}
 }
 
-function whiteFacingDown(cube, instructions)
+function whiteFacingDown(instructions)
 {
 	instructions.push("fcw");
 	instructions.push("fcw");
 }
-function whiteAtBottom(cube)
+function whiteAtBottom(instructions)
 {
 	instructions.push("dcw");
 	instructions.push("rcw");
 	instructions.push("fcc");
 	instructions.push("rcc");
 }
-function whiteStuck(cube)
+function whiteStuck(instructions)
 {
 	instructions.push("lcw");
 	instructions.push("dcw");
 	instructions.push("lcc")
 }
 
-function finishFace(cube)
+function finishFace(instructions)
 {
 	instructions.push("rcc");
 	instructions.push("dcc");
@@ -864,30 +983,30 @@ function finishFace(cube)
 //solving center layer
 function leftCenter(instructions)
 {
-	instructions.push("dcw"); //ucc == dcw
-	instructions.push("rcc"); //lcc == rcc
-	instructions.push("dcc"); //ucw == dcc
-	instructions.push("rcw"); //lcw == rcw
-	instructions.push("dcc");
-	instructions.push("fcw"); //fcw == fcw
-	instructions.push("dcw");
-	instructions.push("fcc"); //fcc == fcc
+	instructions.push("ucc"); 
+	instructions.push("lcc"); 
+	instructions.push("ucw"); 
+	instructions.push("lcw"); 
+	instructions.push("ucw");
+	instructions.push("fcw"); 
+	instructions.push("ucc");
+	instructions.push("fcc");
 }
 
 function rightCenter(instructions)
 {
-	instructions.push("dcc");
-	instructions.push("lcw"); //rcw == lcw
-	instructions.push("dcw");
-	instructions.push("lcc"); //rcc == lcc
-	instructions.push("dcw");
+	instructions.push("ucw");
+	instructions.push("rcw"); 
+	instructions.push("ucc");
+	instructions.push("rcc"); 
+	instructions.push("ucc");
 	instructions.push("fcc");
-	instructions.push("dcc");
+	instructions.push("ucw");
 	instructions.push("fcw");
 }
 
 //yellow side
-function yellowCross(cube)
+function yellowCross(instructions)
 {
 	instructions.push("fcw");
 	instructions.push("rcw");
@@ -897,7 +1016,7 @@ function yellowCross(cube)
 	instructions.push("fcc");
 }
 
-function swapEdges(cube)
+function swapEdges(instructions)
 {
 	instructions.push("rcw");
 	instructions.push("ucw");
@@ -909,7 +1028,7 @@ function swapEdges(cube)
 	instructions.push("rcc");
 	instructions.push("ucw");
 }
-function cycleCorners(cube)
+function cycleCorners(instructions)
 {
 	instructions.push("ucw");
 	instructions.push("rcw");
@@ -920,7 +1039,7 @@ function cycleCorners(cube)
 	instructions.push("ucc");
 	instructions.push("lcw");
 }
-function orientCorners(cube)
+function orientCorners(instructions)
 {
 	instructions.push("rcc");
 	instructions.push("dcc");
