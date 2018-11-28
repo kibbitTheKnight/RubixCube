@@ -2,9 +2,11 @@
 <html>
 	<head>
 	<title>Final Project: Rubix Cube Solver</title>
+	<link rel="stylesheet" type="text/css" href="../html/style.css">
 	<script src="https://threejs.org/build/three.js"></script>
 	<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
 	<script src = "../js/solver.js" </script></script>
+	<!--<canvas id="c" width="10" height="15" style="width: 400px; height: 300px;"></canvas>-->
 	<script>
 	function rotateCube(face, cube, axis, scene, r, cc)
 		{
@@ -90,38 +92,40 @@
 		
 		}
 		
-		function calcRotationAroundAxis( obj3D, axis, angle )
+		function calcRotationAroundAxis(cube, axis, angle)
 		{
+
 			var euler;
 		
-			if ( Math.abs(axis.x) == 1 )
+			if(Math.abs(axis.x) == 1)
 			{
-				euler = new THREE.Euler( angle, 0, 0, 'XYZ' ); 
+				euler = new THREE.Euler(angle, 0, 0); 
 			}
 		
-			if ( Math.abs(axis.y) == 1 )
+			if(Math.abs(axis.y) == 1)
 			{
-				euler = new THREE.Euler( 0, angle, 0, 'XYZ' ); 			
+				euler = new THREE.Euler(0, angle, 0); 			
 			}
 		
-			if ( Math.abs(axis.z) == 1 )
+			if(Math.abs(axis.z) == 1)
 			{
-				euler = new THREE.Euler( 0, 0, angle, 'XYZ' ); 
+				euler = new THREE.Euler(0, 0, angle); 
 			}
-			obj3D.position.applyEuler( euler );
+			cube.position.applyEuler(euler);
 		}
 		function rotateAroundWorldAxis(cube, axis, rotate) 
 		{
 			let rotWorldMatrix = new THREE.Matrix4();
+			
 			rotWorldMatrix.makeRotationAxis(axis.normalize(), rotate);
 			rotWorldMatrix.multiply(cube.matrix);
+			
 			cube.matrix = rotWorldMatrix;
 			cube.setRotationFromMatrix(cube.matrix);
 		}
-		function createCubes(scene, materials) 
+		function createCubes(scene, materials, edges) 
 		{
 			var cubes = [];
-			var edges = [];
 			for (var x = 0; x < 3; x++) 
 			{
 				for (var y = 0; y < 3; y++) 
@@ -182,6 +186,7 @@
 			let backLight = new THREE.DirectionalLight(0xffffff, 0.5);
 			backLight.position.set(0.5, -0.5, -1).normalize();
 			var ambientLight = new THREE.AmbientLight( 0x404040 );
+			
 			scene.add(keyLight);
 			scene.add(fillLight);
 			scene.add(backLight);
@@ -208,13 +213,19 @@
 				new THREE.MeshBasicMaterial({color: 0x26b143}), // blue
 				new THREE.MeshBasicMaterial({color: 0x2f55cf}), // green
 			];
-			var cube = createCubes(scene, materials);
-			//console.log("Cube: " + cube);
-			var instruc = []; //"flipu"; //tested: r, l, f, u, d, b
+			
+			//create cube
+			var edges = [];
+			var cube = createCubes(scene, materials, edges);
+			
+			//create arrays for instructions
+			var instruc = [];
 			var ins = new Array(3);
 			
+			//add axis for help in orienting
 			var axesHelper = new THREE.AxesHelper( 3 );
 			scene.add( axesHelper );
+
 			//scramble cube
 			var moves = [];
 			scrambleCube(moves, 20);
@@ -341,6 +352,11 @@
 				convertInstruction("flipu", ins);
 				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
+			document.getElementById("flips").addEventListener("click", function step1()
+			{
+				convertInstruction("flips", ins);
+				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
+			});
 			document.getElementById("flipr").addEventListener("click", function step1()
 			{
 				convertInstruction("flipr", ins);
@@ -416,6 +432,7 @@
 				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
 			//console.log(button);
+			
 			function step2()
 			{
 				whiteFacingDown(instruc);
@@ -435,49 +452,51 @@
 				
 			//controls
 			let cameraControl= new THREE.OrbitControls( camera );
-			//cameraControl.addEventListener( 'change', render );
-			//cameraControl.addEventListener( 'change', rotate(4, cube, axis[4], scene) );
 			render();
 		}
 		</script>
 	</head>
 	<body onload="mainFunction();">
 		<h1 style="font-family:verdana;"> Keira Taylor and Ashley Smith</h1>
-		<button type = "button" onclick = "" id = "center"> Center Cube </button>
-		<div id = "basicRotations">
-			<button type = "button" onclick = "" id = "rcw"> R </button>
-			<button type = "button" onclick = "" id = "rcc"> R' </button>
-			<button type = "button" onclick = "" id = "lcw"> L </button>
-			<button type = "button" onclick = "" id = "lcc"> L' </button>
-			<button type = "button" onclick = "" id = "fcw"> F </button>
-			<button type = "button" onclick = "" id = "fcc"> F' </button>
-			<button type = "button" onclick = "" id = "bcw"> B </button>
-			<button type = "button" onclick = "" id = "bcc"> B' </button>
-			<button type = "button" onclick = "" id = "ucw"> U </button>
-			<button type = "button" onclick = "" id = "ucc"> U' </button>
-			<button type = "button" onclick = "" id = "dcw"> D </button>
-			<button type = "button" onclick = "" id = "dcc"> D' </button>
+		<button type = "button" class = "button" onclick = "" id = "center"> Center Cube </button>
+		<div id = "secondLayer">
+			<button type = "button" class = "button" onclick = "" id = "leftCenter"> Left Cube </button>
+			<button type = "button" class = "button" onclick = "" id = "rightCenter"> Right Cube </button>
 		</div>
 		<div id = "flips">
-			<button type = "button" onclick = "" id = "flipu"> Flip Upside Down </button>
-			<button type = "button" onclick = "" id = "flipr"> Flip Right </button>
-			<button type = "button" onclick = "" id = "flipl"> Flip Left </button>
+			<button type = "button" class = "button" onclick = "" id = "flipu"> Flip Upside Down </button>
+			<button type = "button" class = "button" onclick = "" id = "flipr"> Flip Right </button>
+			<button type = "button" class = "button" onclick = "" id = "flipl"> Flip Left </button>
+			<button type = "button" class = "button" onclick = "" id = "flips"> Flip Onto Side </button>
+		</div>
+		
+		
+		<div id = "thirdLayer">
+			<button type = "button" class = "button" onclick = "" id = "yellowCross"> Yellow Cross </button>
+			<button type = "button" class = "button" onclick = "" id = "swapEdges"> Swap Edges </button>
+			<button type = "button" class = "button" onclick = "" id = "cycleCorners"> Cycle Corners </button>
+			<button type = "button" class = "button" onclick = "" id = "orientCorners"> Orient Corners </button>
 		</div>
 		<div id = "firstLayer">
-			<button type = "button" onclick = "" id = "whiteDown"> White Side Facing Down </button>
-			<button type = "button" onclick = "" id = "whiteAtBottom"> White At Bottom </button>
-			<button type = "button" onclick = "" id = "whiteCorners"> White Corners </button>
-			<button type = "button" onclick = "" id = "whiteStuck"> White Stuck </button>
+			<button type = "button" class = "button" onclick = "" id = "whiteDown"> White Side Facing Down </button>
+			<button type = "button" class = "button" onclick = "" id = "whiteAtBottom"> White At Bottom </button>
+			<button type = "button" class = "button" onclick = "" id = "whiteCorners"> White Corners </button>
+			<button type = "button" class = "button" onclick = "" id = "whiteStuck"> White Stuck </button>
 		<div>
-		<div id = "secondLayer">
-			<button type = "button" onclick = "" id = "leftCenter"> Left Cube </button>
-			<button type = "button" onclick = "" id = "rightCenter"> Right Cube </button>
-		</div>
-		<div id = "thirdLayer">
-			<button type = "button" onclick = "" id = "yellowCross"> Yellow Cross </button>
-			<button type = "button" onclick = "" id = "swapEdges"> Swap Edges </button>
-			<button type = "button" onclick = "" id = "cycleCorners"> Cycle Corners </button>
-			<button type = "button" onclick = "" id = "orientCorners"> Orient Corners </button>
+		
+		<div id = "basicRotations">
+			<button type = "button" class = "button" onclick = "" id = "rcw"> R </button>
+			<button type = "button" class = "button" onclick = "" id = "rcc"> R' </button>
+			<button type = "button" class = "button" onclick = "" id = "lcw"> L </button>
+			<button type = "button" class = "button" onclick = "" id = "lcc"> L' </button>
+			<button type = "button" class = "button" onclick = "" id = "fcw"> F </button>
+			<button type = "button" class = "button" onclick = "" id = "fcc"> F' </button>
+			<button type = "button" class = "button" onclick = "" id = "bcw"> B </button>
+			<button type = "button" class = "button" onclick = "" id = "bcc"> B' </button>
+			<button type = "button" class = "button" onclick = "" id = "ucw"> U </button>
+			<button type = "button" class = "button" onclick = "" id = "ucc"> U' </button>
+			<button type = "button" class = "button" onclick = "" id = "dcw"> D </button>
+			<button type = "button" class = "button" onclick = "" id = "dcc"> D' </button>
 		</div>
 	</body>
 </html>

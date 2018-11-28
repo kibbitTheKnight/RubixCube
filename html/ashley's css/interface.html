@@ -1,14 +1,84 @@
 <!DOCTYPE html>
+<!-- Template by html.am -->
 <html>
 	<head>
-	<title>Final Project: Rubix Cube Solver</title>
-	<link rel="stylesheet" type="text/css" href="../html/style.css">
-	<script src="https://threejs.org/build/three.js"></script>
-	<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
-	<script src = "../js/solver.js" </script></script>
-	<!--<canvas id="c" width="10" height="15" style="width: 400px; height: 300px;"></canvas>-->
-	<script>
-	function rotateCube(face, cube, axis, scene, r, cc)
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>2 Column Layout &mdash; Left Menu with Header &amp; Footer</title>
+		<style type="text/css">
+		
+			body {
+				margin:0;
+				padding:0;
+				font-family: Sans-Serif;
+				line-height: 1.5em;
+			}
+			
+			#header {
+				background: #ccc;
+				height: 100px;
+			}
+			
+			#header h1 {
+				margin: 0;
+				padding-top: 15px;
+			}
+			
+			main {
+				padding-bottom: 10010px;
+				margin-bottom: -10000px;
+				float: left;
+				width: 100%;
+			}
+			
+			#nav {
+				padding-bottom: 10010px;
+				margin-bottom: -10000px;
+				float: left;
+				width: 230px;
+				margin-left: -100%;
+				background: #eee;
+			}
+			
+			#footer {
+				clear: left;
+				width: 100%;
+				background: #ccc;
+				text-align: center;
+				padding: 4px 0;
+			}
+	
+			#wrapper {
+				overflow: hidden;
+			}
+						
+			#content {
+				margin-left: 230px; /* Same as 'nav' width */
+			}
+			
+			.innertube {
+				margin: 15px; /* Padding for content */
+				margin-top: 0;
+			}
+		
+			p {
+				color: #555;
+			}
+	
+			nav ul {
+				list-style-type: none;
+				margin: 0;
+				padding: 0;
+			}
+			
+			nav ul a {
+				color: darkgreen;
+				text-decoration: none;
+			}
+		
+		</style>
+		
+		<script type="text/javascript">
+				function rotateCube(face, cube, axis, scene, r, cc)
 		{
 			const safeNum = 0.5;
 			var turns = [];
@@ -455,9 +525,62 @@
 			render();
 		}
 		</script>
+		</script>	
+	
 	</head>
-	<body onload="mainFunction();">
-		<h1 style="font-family:verdana;"> Keira Taylor and Ashley Smith</h1>
+	
+	<body>		
+
+		<!--<header id="header">
+			<div class="innertube">
+				<h1>Header...</h1>
+			</div>
+		</header>-->
+		
+		<div id="wrapper">
+		
+			<main>
+				<div id="content">
+					<div class="innertube">
+						<h1 style="font-family:verdana;"> Keira Taylor and Ashley Smith</h1>
+						<!--<p><script>generateText(20)</script></p>-->
+					</div>
+				</div>
+			</main>
+			
+			<nav id="nav">
+				<div class="innertube">
+					<h3>Left heading</h3>
+					<ul>
+						<li><a href="#">Link 1</a></li>
+						<li><a href="#">Link 2</a></li>
+						<li><a href="#">Link 3</a></li>
+						<li><a href="#">Link 4</a></li>
+						<li><a href="#">Link 5</a></li>
+					</ul>
+					<h3>Left heading</h3>
+					<ul>
+						<li><a href="#">Link 1</a></li>
+						<li><a href="#">Link 2</a></li>
+						<li><a href="#">Link 3</a></li>
+						<li><a href="#">Link 4</a></li>
+						<li><a href="#">Link 5</a></li>
+					</ul>
+					<h3>Left heading</h3>
+					<ul>
+						<li><a href="#">Link 1</a></li>
+						<li><a href="#">Link 2</a></li>
+						<li><a href="#">Link 3</a></li>
+						<li><a href="#">Link 4</a></li>
+						<li><a href="#">Link 5</a></li>
+					</ul>
+				</div>
+			</nav>
+		
+		</div>
+		
+		<footer onload="mainFunction();">
+			
 		<button type = "button" class = "button" onclick = "" id = "center"> Center Cube </button>
 		<div id = "secondLayer">
 			<button type = "button" class = "button" onclick = "" id = "leftCenter"> Left Cube </button>
@@ -498,5 +621,7 @@
 			<button type = "button" class = "button" onclick = "" id = "dcw"> D </button>
 			<button type = "button" class = "button" onclick = "" id = "dcc"> D' </button>
 		</div>
+		</footer>
+	
 	</body>
 </html>

@@ -1,5 +1,5 @@
 .button {
-	background-color: #699DB6;
+	background-color: #ffffff;;
 	border-color: rgba(0,0,0,0.3);
 	text-shadow: 0 1px 0 rgba(0,0,0,0.5);
 	color: #FFF;
@@ -8,7 +8,8 @@
 	text-transform: uppercase;
 	letter-spacing: 2;
 	font-style: Arial;
-	font-size: 10px;
+	font-size: 12px;
+	color: #438496;
 	padding: 10px 30px;
 	border-radius: 5px;
 	border: 1px solid rgba(0,0,0,0.3);
@@ -40,45 +41,50 @@
   width: 400px;
   height: 300px;
 }
-body { background: #8dc8e0; }
-/*green screen with floatig title*/
-/*h1 {
-    font: 600 1.5em/1 'Raleway', sans-serif;
-    color: rgba(0,0,0,.5);
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: .5em;
-    position: absolute;
-    top: 25%;
-    width: 100%;
+body { background: #438496; }
+h1 {
+	color: #fff;
+	font-family: 'Cormorant Garamond';
+	border-bottom: 3px solid #ffffff;
+	letter-spacing: normal;
+	font-size: 48px;
+	font-weight: 400;
+	line-height: 72px;
+	
+	letter-spacing: 35px;
+	margin-bottom: 57px;
+	text-align: center;
+	text-indent: 24px;
+	text-transform: uppercase;
 }
 
-span, span:after {
-    font-weight: 900;
-    color: #efedce;
-    white-space: nowrap;
-    display: inline-block;
-    position: relative;
-    letter-spacing: .1em;
-    padding: .2em 0 .25em 0;
+p {
+	color: #fff;
+
+	font-family: 'Cormorant Garamond';
+	font-size: 28px;
+	font-style: italic;
+	font-weight: 400;
+	line-height: 48px;
+	max-width: 640px;
+	margin: 0 auto 48px;
+	text-align: center;
 }
 
-span {
-    font-size: 4em;
-    z-index: 100;
-    text-shadow: .04em .04em 0 #9cb8b3;
+a {
+	color: #e66c7e;	border-bottom: 2px solid #e66c7e;
+	font-family: 'Cormorant Garamond';
+	font-size: 16px;
+	font-weight: 700;
+	letter-spacing: 3px;
+	text-decoration: none;
+	text-transform: uppercase;
 }
 
-span:after {
-    content: attr(data-shadow-text);
-    color: rgba(0,0,0,.35);
-    text-shadow: none;
-    position: absolute;
-    left: .0875em;
-    top: .0875em;
-    z-index: -1;
-    -webkit-mask-image: url(//f.cl.ly/items/1t1C0W3y040g1J172r3h/mask.png);
-} */
+a:hover {
+	color: #fff;
+	border-bottom: 2px solid #fff;
+}
 .column {
     float: left;
     width: 50%;

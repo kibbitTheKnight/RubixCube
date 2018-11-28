@@ -168,7 +168,7 @@
 			let renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth * 2 / 3, window.innerHeight * 2 / 3);
 			document.getElementById("canvas").appendChild( renderer.domElement);
-			renderer.setClearColor (0x8dc8e0, 1);
+			renderer.setClearColor (0x438496, 1);
 			
 			//create scene and camera
 			let scene = new THREE.Scene();
@@ -460,6 +460,7 @@
 	</head>
 	<body onload="mainFunction();">
 		<h1 style="font-family:verdana; font-size: 30px;"> Keira Taylor and Ashley Smith</h1>
+		<p>Solve the Rubik's Cube using single moves or a prebuilt set of moves!</p>
 		<div class = "wrapper" id = "canvas">
 		</div>
 		<div class = "wrapper">
