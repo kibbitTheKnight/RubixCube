@@ -2,7 +2,6 @@
 <html>
 	<head>
 	<title>Final Project: Rubix Cube Solver</title>
-	<link rel="stylesheet" type="text/css" href="../html/style.css">
 	<script src="https://threejs.org/build/three.js"></script>
 	<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
 	<script src = "../js/solver.js" </script></script>
@@ -77,12 +76,12 @@
 			{
 				r *= 2;
 			}
+			console.log(specificCubes);
 			for(i = 0; i < specificCubes.length; i++)
 			{
 				calcRotationAroundAxis(cube[specificCubes[i]], axis, (cc * r));	
 				cube[specificCubes[i]].rotateOnWorldAxis(axis, cc * r);
 			}
-			console.log(r);
 			for(i = 0; i < cube.length; i++)
 			{
 				scene.add(cube[i]);
@@ -91,40 +90,38 @@
 		
 		}
 		
-		function calcRotationAroundAxis(cube, axis, angle)
+		function calcRotationAroundAxis( obj3D, axis, angle )
 		{
-
 			var euler;
 		
-			if(Math.abs(axis.x) == 1)
+			if ( Math.abs(axis.x) == 1 )
 			{
-				euler = new THREE.Euler(angle, 0, 0); 
+				euler = new THREE.Euler( angle, 0, 0, 'XYZ' ); 
 			}
 		
-			if(Math.abs(axis.y) == 1)
+			if ( Math.abs(axis.y) == 1 )
 			{
-				euler = new THREE.Euler(0, angle, 0); 			
+				euler = new THREE.Euler( 0, angle, 0, 'XYZ' ); 			
 			}
 		
-			if(Math.abs(axis.z) == 1)
+			if ( Math.abs(axis.z) == 1 )
 			{
-				euler = new THREE.Euler(0, 0, angle); 
+				euler = new THREE.Euler( 0, 0, angle, 'XYZ' ); 
 			}
-			cube.position.applyEuler(euler);
+			obj3D.position.applyEuler( euler );
 		}
 		function rotateAroundWorldAxis(cube, axis, rotate) 
 		{
 			let rotWorldMatrix = new THREE.Matrix4();
-			
 			rotWorldMatrix.makeRotationAxis(axis.normalize(), rotate);
 			rotWorldMatrix.multiply(cube.matrix);
-			
 			cube.matrix = rotWorldMatrix;
 			cube.setRotationFromMatrix(cube.matrix);
 		}
-		function createCubes(scene, materials, edges) 
+		function createCubes(scene, materials) 
 		{
 			var cubes = [];
+			var edges = [];
 			for (var x = 0; x < 3; x++) 
 			{
 				for (var y = 0; y < 3; y++) 
@@ -166,8 +163,8 @@
 		{
 			//create renderer
 			let renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth * 2 / 3, window.innerHeight * 2 / 3);
-			document.getElementById("canvas").appendChild( renderer.domElement);
+			renderer.setSize( window.innerWidth, window.innerHeight);
+			document.body.appendChild( renderer.domElement);
 			renderer.setClearColor (0x8dc8e0, 1);
 			
 			//create scene and camera
@@ -175,10 +172,7 @@
 			let aspect = window.innerWidth/window.innerHeight;
 			let camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 100 );
 			camera.position.z= 6;
-			console.log(camera);
 			scene.add(camera);
-			
-			let defaultCamera = camera.clone();
 			
 			//lights
 			let keyLight = new THREE.DirectionalLight(0xFFBF80, 1.0);
@@ -188,7 +182,6 @@
 			let backLight = new THREE.DirectionalLight(0xffffff, 0.5);
 			backLight.position.set(0.5, -0.5, -1).normalize();
 			var ambientLight = new THREE.AmbientLight( 0x404040 );
-			
 			scene.add(keyLight);
 			scene.add(fillLight);
 			scene.add(backLight);
@@ -215,19 +208,13 @@
 				new THREE.MeshBasicMaterial({color: 0x26b143}), // blue
 				new THREE.MeshBasicMaterial({color: 0x2f55cf}), // green
 			];
-			
-			//create cube
-			var edges = [];
-			var cube = createCubes(scene, materials, edges);
-			
-			//create arrays for instructions
-			var instruc = [];
+			var cube = createCubes(scene, materials);
+			//console.log("Cube: " + cube);
+			var instruc = []; //"flipu"; //tested: r, l, f, u, d, b
 			var ins = new Array(3);
 			
-			//add axis for help in orienting
 			var axesHelper = new THREE.AxesHelper( 3 );
 			scene.add( axesHelper );
-
 			//scramble cube
 			var moves = [];
 			scrambleCube(moves, 20);
@@ -364,14 +351,9 @@
 				convertInstruction("flipl", ins);
 				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
-			document.getElementById("flipses").addEventListener("click", function step7()
-			{
-				convertInstruction("flips", ins);
-				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
-			});
 			document.getElementById("center").addEventListener("click", function step1()
 			{
-				camera.copy(defaultCamera, true);
+				//TODO
 			});
 			document.getElementById("rcw").addEventListener("click", function step1()
 			{
@@ -434,7 +416,6 @@
 				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
 			//console.log(button);
-			
 			function step2()
 			{
 				whiteFacingDown(instruc);
@@ -454,55 +435,49 @@
 				
 			//controls
 			let cameraControl= new THREE.OrbitControls( camera );
+			//cameraControl.addEventListener( 'change', render );
+			//cameraControl.addEventListener( 'change', rotate(4, cube, axis[4], scene) );
 			render();
 		}
 		</script>
 	</head>
 	<body onload="mainFunction();">
-		<h1 style="font-family:verdana; font-size: 30px;"> Keira Taylor and Ashley Smith</h1>
-		<div class = "wrapper" id = "canvas">
+		<h1 style="font-family:verdana;"> Keira Taylor and Ashley Smith</h1>
+		<button type = "button" onclick = "" id = "center"> Center Cube </button>
+		<div id = "basicRotations">
+			<button type = "button" onclick = "" id = "rcw"> R </button>
+			<button type = "button" onclick = "" id = "rcc"> R' </button>
+			<button type = "button" onclick = "" id = "lcw"> L </button>
+			<button type = "button" onclick = "" id = "lcc"> L' </button>
+			<button type = "button" onclick = "" id = "fcw"> F </button>
+			<button type = "button" onclick = "" id = "fcc"> F' </button>
+			<button type = "button" onclick = "" id = "bcw"> B </button>
+			<button type = "button" onclick = "" id = "bcc"> B' </button>
+			<button type = "button" onclick = "" id = "ucw"> U </button>
+			<button type = "button" onclick = "" id = "ucc"> U' </button>
+			<button type = "button" onclick = "" id = "dcw"> D </button>
+			<button type = "button" onclick = "" id = "dcc"> D' </button>
 		</div>
-		<div class = "wrapper">
-			<button type = "button" class = "button" onclick = "" id = "center"> Center Cube </button>
+		<div id = "flips">
+			<button type = "button" onclick = "" id = "flipu"> Flip Upside Down </button>
+			<button type = "button" onclick = "" id = "flipr"> Flip Right </button>
+			<button type = "button" onclick = "" id = "flipl"> Flip Left </button>
 		</div>
-		<div class = "wrapper" id = "basicRotations">
-			<button type = "button" class = "button" onclick = "" id = "rcw"> R </button>
-			<button type = "button" class = "button" onclick = "" id = "rcc"> R' </button>
-			<button type = "button" class = "button" onclick = "" id = "lcw"> L </button>
-			<button type = "button" class = "button" onclick = "" id = "lcc"> L' </button>
-			<button type = "button" class = "button" onclick = "" id = "fcw"> F </button>
-			<button type = "button" class = "button" onclick = "" id = "fcc"> F' </button>
-			<button type = "button" class = "button" onclick = "" id = "bcw"> B </button>
-			<button type = "button" class = "button" onclick = "" id = "bcc"> B' </button>
-			<button type = "button" class = "button" onclick = "" id = "ucw"> U </button>
-			<button type = "button" class = "button" onclick = "" id = "ucc"> U' </button>
-			<button type = "button" class = "button" onclick = "" id = "dcw"> D </button>
-			<button type = "button" class = "button" onclick = "" id = "dcc"> D' </button>
+		<div id = "firstLayer">
+			<button type = "button" onclick = "" id = "whiteDown"> White Side Facing Down </button>
+			<button type = "button" onclick = "" id = "whiteAtBottom"> White At Bottom </button>
+			<button type = "button" onclick = "" id = "whiteCorners"> White Corners </button>
+			<button type = "button" onclick = "" id = "whiteStuck"> White Stuck </button>
+		<div>
+		<div id = "secondLayer">
+			<button type = "button" onclick = "" id = "leftCenter"> Left Cube </button>
+			<button type = "button" onclick = "" id = "rightCenter"> Right Cube </button>
 		</div>
-		<div class = "wrapper" id = "flips">
-			<button type = "button" class = "button" onclick = "" id = "flipu"> Flip Upside Down </button>
-			<button type = "button" class = "button" onclick = "" id = "flipr"> Flip Right </button>
-			<button type = "button" class = "button" onclick = "" id = "flipl"> Flip Left </button>
-			<button type = "button" class = "button" onclick = "" id = "flipses"> Flip Onto Side </button>
+		<div id = "thirdLayer">
+			<button type = "button" onclick = "" id = "yellowCross"> Yellow Cross </button>
+			<button type = "button" onclick = "" id = "swapEdges"> Swap Edges </button>
+			<button type = "button" onclick = "" id = "cycleCorners"> Cycle Corners </button>
+			<button type = "button" onclick = "" id = "orientCorners"> Orient Corners </button>
 		</div>
-		<div class = "wrapper" id = "firstLayer">
-			<button type = "button" class = "button" onclick = "" id = "whiteDown"> White Side Facing Down </button>
-			<button type = "button" class = "button" onclick = "" id = "whiteAtBottom"> White At Bottom </button>
-			<button type = "button" class = "button" onclick = "" id = "whiteCorners"> White Corners </button>
-			<button type = "button" class = "button" onclick = "" id = "whiteStuck"> White Stuck </button>
-		</div>
-		<div class = "wrapper" id = "secondLayer">
-			<button type = "button" class = "button" onclick = "" id = "leftCenter"> Left Cube </button>
-			<button type = "button" class = "button" onclick = "" id = "rightCenter"> Right Cube </button>
-		</div>
-		
-		
-		<div class = "wrapper" id = "thirdLayer">
-			<button type = "button" class = "button" onclick = "" id = "yellowCross"> Yellow Cross </button>
-			<button type = "button" class = "button" onclick = "" id = "swapEdges"> Swap Edges </button>
-			<button type = "button" class = "button" onclick = "" id = "cycleCorners"> Cycle Corners </button>
-			<button type = "button" class = "button" onclick = "" id = "orientCorners"> Orient Corners </button>
-		</div>
-		
 	</body>
 </html>
