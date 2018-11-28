@@ -364,7 +364,7 @@
 				convertInstruction("flipl", ins);
 				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
-			document.getElementById("flipses").addEventListener("click", function step7()
+			document.getElementById("flips").addEventListener("click", function step7()
 			{
 				convertInstruction("flips", ins);
 				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
@@ -479,11 +479,11 @@
 			<button type = "button" class = "button" onclick = "" id = "dcw"> D </button>
 			<button type = "button" class = "button" onclick = "" id = "dcc"> D' </button>
 		</div>
-		<div class = "wrapper" id = "flips">
+		<div class = "wrapper" id = "flipMoves">
 			<button type = "button" class = "button" onclick = "" id = "flipu"> Flip Upside Down </button>
 			<button type = "button" class = "button" onclick = "" id = "flipr"> Flip Right </button>
 			<button type = "button" class = "button" onclick = "" id = "flipl"> Flip Left </button>
-			<button type = "button" class = "button" onclick = "" id = "flipses"> Flip Onto Side </button>
+			<button type = "button" class = "button" onclick = "" id = "flips"> Flip Onto Side </button>
 		</div>
 		<div class = "wrapper" id = "firstLayer">
 			<button type = "button" class = "button" onclick = "" id = "whiteDown"> White Side Facing Down </button>
