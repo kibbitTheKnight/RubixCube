@@ -40,7 +40,7 @@
   width: 400px;
   height: 300px;
 }
-body { background: #9cb8b3; }
+body { background: #8dc8e0; }
 /*green screen with floatig title*/
 /*h1 {
     font: 600 1.5em/1 'Raleway', sans-serif;
@@ -79,3 +79,19 @@ span:after {
     z-index: -1;
     -webkit-mask-image: url(//f.cl.ly/items/1t1C0W3y040g1J172r3h/mask.png);
 } */
+.column {
+    float: left;
+    width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+}

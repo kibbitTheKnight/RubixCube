@@ -165,8 +165,8 @@
 		{
 			//create renderer
 			let renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth, window.innerHeight);
-			document.body.appendChild( renderer.domElement);
+			renderer.setSize( window.innerWidth * 2 / 3, window.innerHeight * 2 / 3);
+			document.getElementById("canvas").appendChild( renderer.domElement);
 			renderer.setClearColor (0x8dc8e0, 1);
 			
 			//create scene and camera
@@ -456,12 +456,16 @@
 	</head>
 	<body onload="mainFunction();">
 		<h1 style="font-family:verdana;"> Keira Taylor and Ashley Smith</h1>
-		<button type = "button" class = "button" onclick = "" id = "center"> Center Cube </button>
-		<div id = "secondLayer">
+		<div class = "wrapper" id = "canvas">
+		</div>
+		<div class = "wrapper">
+			<button type = "button" class = "button" onclick = "" id = "center"> Center Cube </button>
+		</div>
+		<div class = "wrapper" id = "secondLayer">
 			<button type = "button" class = "button" onclick = "" id = "leftCenter"> Left Cube </button>
 			<button type = "button" class = "button" onclick = "" id = "rightCenter"> Right Cube </button>
 		</div>
-		<div id = "flips">
+		<div class = "wrapper" id = "flips">
 			<button type = "button" class = "button" onclick = "" id = "flipu"> Flip Upside Down </button>
 			<button type = "button" class = "button" onclick = "" id = "flipr"> Flip Right </button>
 			<button type = "button" class = "button" onclick = "" id = "flipl"> Flip Left </button>
@@ -469,20 +473,20 @@
 		</div>
 		
 		
-		<div id = "thirdLayer">
+		<div class = "wrapper" id = "thirdLayer">
 			<button type = "button" class = "button" onclick = "" id = "yellowCross"> Yellow Cross </button>
 			<button type = "button" class = "button" onclick = "" id = "swapEdges"> Swap Edges </button>
 			<button type = "button" class = "button" onclick = "" id = "cycleCorners"> Cycle Corners </button>
 			<button type = "button" class = "button" onclick = "" id = "orientCorners"> Orient Corners </button>
 		</div>
-		<div id = "firstLayer">
+		<div class = "wrapper" id = "firstLayer">
 			<button type = "button" class = "button" onclick = "" id = "whiteDown"> White Side Facing Down </button>
 			<button type = "button" class = "button" onclick = "" id = "whiteAtBottom"> White At Bottom </button>
 			<button type = "button" class = "button" onclick = "" id = "whiteCorners"> White Corners </button>
 			<button type = "button" class = "button" onclick = "" id = "whiteStuck"> White Stuck </button>
 		<div>
 		
-		<div id = "basicRotations">
+		<div class = "wrapper" id = "basicRotations">
 			<button type = "button" class = "button" onclick = "" id = "rcw"> R </button>
 			<button type = "button" class = "button" onclick = "" id = "rcc"> R' </button>
 			<button type = "button" class = "button" onclick = "" id = "lcw"> L </button>
