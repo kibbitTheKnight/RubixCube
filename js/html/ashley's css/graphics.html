@@ -1,17 +1,28 @@
 <!DOCTYPE html>
 <html>
 	<head>
-	<title>Final Project: Rubik's Cube Solver</title>
-	<link rel="stylesheet" type="text/css" href="../html/style.css">
+	 <link rel="stylesheet" type="text/css" href="mystyle.css">
+	<title>Final Project: Rubix Cube Solver</title>
+	
+
+</style>
+	<!--<canvas id="c" width="10" height="15"></canvas>-->
 	<script src="https://threejs.org/build/three.js"></script>
 	<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
 	<script src = "../js/solver.js" </script></script>
 	<script>
-	function rotateCube(face, cube, axis, scene, r, cc, edges)
+	function rotateCube(face, cube, axis, scene, r, cc)
 		{
 			const safeNum = 0.5;
 			var turns = [];
 			turns.push(new Array(6));
+			//console.log(cube);
+			turns[4] = [8, 17, 26, 5, 14, 23, 2, 11, 20]; //front, green face
+			turns[5] = [24, 15, 6, 21, 12, 3, 18, 9, 0]; //back, blue face
+			turns[0] = [6, 7, 8, 3, 4, 5, 0, 1, 2]; //left, orange face
+			turns[1] = [26, 25 ,24, 23, 22, 21, 20, 19, 18]; //right, red face
+			turns[2] = [24, 25, 26, 15, 16, 17, 6, 7, 8]; //up, white face
+			turns[3] = [0, 1, 2, 9, 10, 11, 18, 19, 20]; //down, yellow face
 			
 			var specificCubes = [];
 			
@@ -65,23 +76,20 @@
 					specificCubes.push(i);
 				}
 				scene.remove(cube[i]);
-				scene.remove(edges[i]);
 			}
 			if(face == 11) //rotate Math.PI to go upwards
 			{
 				r *= 2;
 			}
+			console.log(specificCubes);
 			for(i = 0; i < specificCubes.length; i++)
 			{
 				calcRotationAroundAxis(cube[specificCubes[i]], axis, (cc * r));	
 				cube[specificCubes[i]].rotateOnWorldAxis(axis, cc * r);
-				calcRotationAroundAxis(edges[specificCubes[i]], axis, (cc * r));	
-				edges[specificCubes[i]].rotateOnWorldAxis(axis, cc * r);
 			}
 			for(i = 0; i < cube.length; i++)
 			{
 				scene.add(cube[i]);
-				scene.add(edges[i]);
 			}
 			
 		
@@ -134,8 +142,6 @@
 						cube.position.x = (x - 1) * position;
 						cube.position.y = (y - 1) * position;
 						cube.position.z = (z - 1) * position;
-						cube.castShadow = true;
-						cube.receiveShadow = true;
 						
 						var edge = new THREE.EdgesGeometry( cubeGeometry );
 						var line = new THREE.LineSegments( edge, new THREE.LineBasicMaterial( { color: 0x000000, linewidth: 1 } ) );
@@ -164,10 +170,9 @@
 		{
 			//create renderer
 			let renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth * 2 / 3, window.innerHeight * 2 / 3);
-			document.getElementById("canvas").appendChild( renderer.domElement);
+			renderer.setSize( window.innerWidth, window.innerHeight);
+			document.body.appendChild( renderer.domElement);
 			renderer.setClearColor (0x8dc8e0, 1);
-			renderer.shadowMap.enabled = true;
 			
 			//create scene and camera
 			let scene = new THREE.Scene();
@@ -175,8 +180,6 @@
 			let camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 100 );
 			camera.position.z= 6;
 			scene.add(camera);
-			
-			let defaultCamera = camera.clone();
 			
 			//lights
 			let keyLight = new THREE.DirectionalLight(0xFFBF80, 1.0);
@@ -233,138 +236,205 @@
 			for(h = 0; h < moves.length; h++)
 			{
 				convertInstruction(moves[h], ins);
-				rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1], edges);
+				rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
 			}
-			
-			//create command queue
-			var angleQueue = [];
-			
-			//create vars for rotating
-			var xz = 61;
-			var y = 57;
-			var curAngle = 0;
-			var applyingAngle = false;
-			var currentCommand = [];
 			
 			//algorithms
 			document.getElementById("whiteDown").addEventListener("click", function step1()
 			{
+				instruc.splice(0, instruc.length);
 				whiteFacingDown(instruc);
 				console.log(instruc);
+				for(h = 0; h < instruc.length; h++)
+				{
+					convertInstruction(instruc[h], ins);
+					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+				}
 			});
 			document.getElementById("whiteAtBottom").addEventListener("click", function step1()
 			{
+				instruc.splice(0, instruc.length);
 				whiteAtBottom(instruc);
 				console.log(instruc);
+				for(h = 0; h < instruc.length; h++)
+				{
+					convertInstruction(instruc[h], ins);
+					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+				}
 			});
 			document.getElementById("whiteCorners").addEventListener("click", function step1()
 			{
+				instruc.splice(0, instruc.length);
 				finishFace(instruc);
 				console.log(instruc);
+				for(h = 0; h < instruc.length; h++)
+				{
+					convertInstruction(instruc[h], ins);
+					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+				}
 			});
 			document.getElementById("whiteStuck").addEventListener("click", function step1()
 			{
+				instruc.splice(0, instruc.length);
 				whiteStuck(instruc);
 				console.log(instruc);
+				for(h = 0; h < instruc.length; h++)
+				{
+					convertInstruction(instruc[h], ins);
+					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+				}
 			});
 			document.getElementById("leftCenter").addEventListener("click", function step1()
 			{
+				instruc.splice(0, instruc.length);
 				leftCenter(instruc);
 				console.log(instruc);
+				for(h = 0; h < instruc.length; h++)
+				{
+					convertInstruction(instruc[h], ins);
+					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+				}
 			});
 			document.getElementById("rightCenter").addEventListener("click", function step1()
 			{
+				instruc.splice(0, instruc.length);
 				rightCenter(instruc);
 				console.log(instruc);
+				for(h = 0; h < instruc.length; h++)
+				{
+					convertInstruction(instruc[h], ins);
+					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+				}
 			});
 			document.getElementById("yellowCross").addEventListener("click", function step1()
 			{
+				instruc.splice(0, instruc.length);
 				yellowCross(instruc);
 				console.log(instruc);
+				for(h = 0; h < instruc.length; h++)
+				{
+					convertInstruction(instruc[h], ins);
+					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+				}
 			});
 			document.getElementById("swapEdges").addEventListener("click", function step1()
 			{
+				instruc.splice(0, instruc.length);
 				swapEdges(instruc);
 				console.log(instruc);
+				for(h = 0; h < instruc.length; h++)
+				{
+					convertInstruction(instruc[h], ins);
+					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+				}
 			});
 			document.getElementById("cycleCorners").addEventListener("click", function step1()
 			{
+				instruc.splice(0, instruc.length);
 				cycleCorners(instruc);
 				console.log(instruc);
+				for(h = 0; h < instruc.length; h++)
+				{
+					convertInstruction(instruc[h], ins);
+					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+				}
 			});
 			document.getElementById("orientCorners").addEventListener("click", function step1()
 			{
+				instruc.splice(0, instruc.length);
 				orientCorners(instruc);
 				console.log(instruc);
+				for(h = 0; h < instruc.length; h++)
+				{
+					convertInstruction(instruc[h], ins);
+					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+				}
 			});
 			document.getElementById("flipu").addEventListener("click", function step1()
 			{
-				instruc.push("flipu");
+				convertInstruction("flipu", ins);
+				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
+			});
+			document.getElementById("flips").addEventListener("click", function step1()
+			{
+				convertInstruction("flips", ins);
+				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
 			document.getElementById("flipr").addEventListener("click", function step1()
 			{
-				instruc.push("flipr");
+				convertInstruction("flipr", ins);
+				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
 			document.getElementById("flipl").addEventListener("click", function step1()
 			{
-				instruc.push("flipl");
-			});
-			document.getElementById("flips").addEventListener("click", function step7()
-			{
-				instruc.push("flips");
+				convertInstruction("flipl", ins);
+				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
 			document.getElementById("center").addEventListener("click", function step1()
 			{
-				camera.copy(defaultCamera, true);
+				//TODO
 			});
 			document.getElementById("rcw").addEventListener("click", function step1()
 			{
-				instruc.push("rcw");
+				convertInstruction("rcw", ins);
+				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
 			document.getElementById("rcc").addEventListener("click", function step1()
 			{
-				instruc.push("rcc");
+				convertInstruction("rcc", ins);
+				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
 			document.getElementById("lcw").addEventListener("click", function step1()
 			{
-				instruc.push("lcw");
+				convertInstruction("lcw", ins);
+				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
 			document.getElementById("lcc").addEventListener("click", function step1()
 			{
-				instruc.push("lcc");
+				convertInstruction("lcc", ins);
+				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
 			document.getElementById("ucw").addEventListener("click", function step1()
 			{
-				instruc.push("ucw");
+				convertInstruction("ucw", ins);
+				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
 			document.getElementById("ucc").addEventListener("click", function step1()
 			{
-				instruc.push("ucc");
+				convertInstruction("ucc", ins);
+				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
 			document.getElementById("dcw").addEventListener("click", function step1()
 			{
-				instruc.push("dcw");
+				convertInstruction("dcw", ins);
+				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
 			document.getElementById("dcc").addEventListener("click", function step1()
 			{
-				instruc.push("dcc");
+				convertInstruction("dcc", ins);
+				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
 			document.getElementById("fcw").addEventListener("click", function step1()
 			{
-				instruc.push("fcw");
+				convertInstruction("fcw", ins);
+				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
 			document.getElementById("fcc").addEventListener("click", function step1()
 			{
-				instruc.push("fcc");
+				convertInstruction("fcc", ins);
+				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
 			document.getElementById("bcw").addEventListener("click", function step1()
 			{
-				instruc.push("bcw");
+				convertInstruction("bcw", ins);
+				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
 			document.getElementById("bcc").addEventListener("click", function step1()
 			{
-				instruc.push("bcc");
+				convertInstruction("bcc", ins);
+				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
 			});
+			//console.log(button);
 			
 			function step2()
 			{
@@ -381,46 +451,6 @@
 			{
 				requestAnimationFrame(render); 
 				renderer.render( scene, camera );
-				
-				if(!applyingAngle)
-				{
-					if(instruc.length !== 0)
-					{
-						console.log(instruc);
-						currentCommand = instruc.shift();
-						console.log(instruc);
-						if(currentCommand[0] == 2 || currentCommand[0] == 3)
-						{
-							curAngle = (Math.PI / 2) / y;
-							for(i = 0; i < y; i++)
-							{
-								angleQueue.push(curAngle);
-							}
-						}
-						else
-						{
-							curAngle = (Math.PI / 2) / xz;
-							for(i = 0; i < xz; i++)
-							{
-								angleQueue.push(curAngle);
-							}
-						}
-					}
-					applyingAngle = true;
-				}
-				else
-				{
-					if(angleQueue.length > 0)
-					{
-						convertInstruction(currentCommand, ins);
-						rotateCube(ins[2], cube, axis[ins[0]], scene, angleQueue.shift(), ins[1], edges);
-					}
-					else
-					{
-						currentCommand = [];
-						applyingAngle = false;
-					}
-				}
 			};
 				
 			//controls
@@ -430,50 +460,50 @@
 		</script>
 	</head>
 	<body onload="mainFunction();">
-		<h1 style="font-family:verdana; font-size: 30px;"> Keira Taylor and Ashley Smith</h1>
-		<div class = "wrapper" id = "canvas">
-		</div>
-		<div class = "wrapper">
-			<button type = "button" class = "button" onclick = "" id = "center"> Center Cube </button>
-		</div>
-		<div class = "wrapper" id = "basicRotations">
-			<button type = "button" class = "button" onclick = "" id = "rcw"> R </button>
-			<button type = "button" class = "button" onclick = "" id = "rcc"> R' </button>
-			<button type = "button" class = "button" onclick = "" id = "lcw"> L </button>
-			<button type = "button" class = "button" onclick = "" id = "lcc"> L' </button>
-			<button type = "button" class = "button" onclick = "" id = "fcw"> F </button>
-			<button type = "button" class = "button" onclick = "" id = "fcc"> F' </button>
-			<button type = "button" class = "button" onclick = "" id = "bcw"> B </button>
-			<button type = "button" class = "button" onclick = "" id = "bcc"> B' </button>
-			<button type = "button" class = "button" onclick = "" id = "ucw"> U </button>
-			<button type = "button" class = "button" onclick = "" id = "ucc"> U' </button>
-			<button type = "button" class = "button" onclick = "" id = "dcw"> D </button>
-			<button type = "button" class = "button" onclick = "" id = "dcc"> D' </button>
-		</div>
-		<div class = "wrapper" id = "flipMoves">
-			<button type = "button" class = "button" onclick = "" id = "flipu"> Flip Upside Down </button>
-			<button type = "button" class = "button" onclick = "" id = "flipr"> Flip Right </button>
-			<button type = "button" class = "button" onclick = "" id = "flipl"> Flip Left </button>
-			<button type = "button" class = "button" onclick = "" id = "flips"> Flip Onto Side </button>
-		</div>
-		<div class = "wrapper" id = "firstLayer">
-			<button type = "button" class = "button" onclick = "" id = "whiteDown"> White Side Facing Down </button>
-			<button type = "button" class = "button" onclick = "" id = "whiteAtBottom"> White At Bottom </button>
-			<button type = "button" class = "button" onclick = "" id = "whiteCorners"> White Corners </button>
-			<button type = "button" class = "button" onclick = "" id = "whiteStuck"> White Stuck </button>
-		</div>
-		<div class = "wrapper" id = "secondLayer">
-			<button type = "button" class = "button" onclick = "" id = "leftCenter"> Left Cube </button>
-			<button type = "button" class = "button" onclick = "" id = "rightCenter"> Right Cube </button>
-		</div>
+		<h1 style="font-family:verdana;"> Keira Taylor and Ashley Smith</h1>
+		<button type = "button" class="button" onclick = "" id = "center"> Center Cube </button>
 		
-		
-		<div class = "wrapper" id = "thirdLayer">
-			<button type = "button" class = "button" onclick = "" id = "yellowCross"> Yellow Cross </button>
-			<button type = "button" class = "button" onclick = "" id = "swapEdges"> Swap Edges </button>
-			<button type = "button" class = "button" onclick = "" id = "cycleCorners"> Cycle Corners </button>
-			<button type = "button" class = "button" onclick = "" id = "orientCorners"> Orient Corners </button>
+		<div id = "flips">
+<<<<<<< HEAD
+			<button type = "button" class="button" onclick = "" id = "flipu"> Flip Upside Down </button>
+			<button type = "button" class="button" onclick = "" id = "flipr"> Flip Right </button>
+			<button type = "button" class="button" onclick = "" id = "flipl"> Flip Left </button>
+=======
+			<button type = "button" onclick = "" id = "flipu"> Flip Upside Down </button>
+			<button type = "button" onclick = "" id = "flipr"> Flip Right </button>
+			<button type = "button" onclick = "" id = "flipl"> Flip Left </button>
+			<button type = "button" onclick = "" id = "flips"> Flip Onto Side </button>
+>>>>>>> afc47d540349f6229b0da040887819bb1793ea2c
 		</div>
-		
+		<div id = "firstLayer">
+			<button type = "button" class="button" onclick = "" id = "whiteDown"> White Side Facing Down </button>
+			<button type = "button" class="button" onclick = "" id = "whiteAtBottom"> White At Bottom </button>
+			<button type = "button" class="button" onclick = "" id = "whiteCorners"> White Corners </button>
+			<button type = "button" class="button" onclick = "" id = "whiteStuck"> White Stuck </button>
+		<div>
+		<div id = "secondLayer">
+			<button type = "button" class="button" onclick = "" id = "leftCenter"> Left Cube </button>
+			<button type = "button" class="button" onclick = "" id = "rightCenter"> Right Cube </button>
+		</div>
+		<div id = "thirdLayer">
+			<button type = "button" class="button" onclick = "" id = "yellowCross"> Yellow Cross </button>
+			<button type = "button" class="button" onclick = "" id = "swapEdges"> Swap Edges </button>
+			<button type = "button" class="button" onclick = "" id = "cycleCorners"> Cycle Corners </button>
+			<button type = "button" class="button" onclick = "" id = "orientCorners"> Orient Corners </button>
+		</div>
+		<div id = "basicRotations">
+			<button type = "button" class="button" onclick = "" id = "rcw"> R </button>
+			<button type = "button" class="button" onclick = "" id = "rcc"> R' </button>
+			<button type = "button" class="button" onclick = "" id = "lcw"> L </button>
+			<button type = "button" class="button" onclick = "" id = "lcc"> L' </button>
+			<button type = "button" class="button" onclick = "" id = "fcw"> F </button>
+			<button type = "button" class="button" onclick = "" id = "fcc"> F' </button>
+			<button type = "button" class="button" onclick = "" id = "bcw"> B </button>
+			<button type = "button" class="button" onclick = "" id = "bcc"> B' </button>
+			<button type = "button" class="button" onclick = "" id = "ucw"> U </button>
+			<button type = "button" class="button" onclick = "" id = "ucc"> U' </button>
+			<button type = "button" class="button" onclick = "" id = "dcw"> D </button>
+			<button type = "button" class="button" onclick = "" id = "dcc"> D' </button>
+		</div>
 	</body>
 </html>
