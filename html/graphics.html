@@ -7,7 +7,7 @@
 	<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
 	<script src = "../js/solver.js" </script></script>
 	<script>
-	function rotateCube(face, cube, axis, scene, r, cc)
+	function rotateCube(face, cube, axis, scene, r, cc, edges)
 		{
 			const safeNum = 0.5;
 			var turns = [];
@@ -72,6 +72,7 @@
 					specificCubes.push(i);
 				}
 				scene.remove(cube[i]);
+				scene.remove(edges[i]);
 			}
 			if(face == 11) //rotate Math.PI to go upwards
 			{
@@ -81,11 +82,13 @@
 			{
 				calcRotationAroundAxis(cube[specificCubes[i]], axis, (cc * r));	
 				cube[specificCubes[i]].rotateOnWorldAxis(axis, cc * r);
+				calcRotationAroundAxis(edges[specificCubes[i]], axis, (cc * r));	
+				edges[specificCubes[i]].rotateOnWorldAxis(axis, cc * r);
 			}
-			console.log(r);
 			for(i = 0; i < cube.length; i++)
 			{
 				scene.add(cube[i]);
+				scene.add(edges[i]);
 			}
 			
 		
@@ -235,139 +238,85 @@
 			for(h = 0; h < moves.length; h++)
 			{
 				convertInstruction(moves[h], ins);
-				rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
+				rotateCube(ins[0], cube, axis[ins[0]], scene, Math.PI/2, ins[1], edges);
 			}
+			
+			//create command queue
+			var angleQueue = [];
+			
+			//create vars for rotating
+			var xz = 61;
+			var y = 57;
+			var curAngle = 0;
+			var applyingAngle = false;
+			var currentCommand = [];
 			
 			//algorithms
 			document.getElementById("whiteDown").addEventListener("click", function step1()
 			{
-				instruc.splice(0, instruc.length);
 				whiteFacingDown(instruc);
 				console.log(instruc);
-				for(h = 0; h < instruc.length; h++)
-				{
-					convertInstruction(instruc[h], ins);
-					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
-				}
 			});
 			document.getElementById("whiteAtBottom").addEventListener("click", function step1()
 			{
-				instruc.splice(0, instruc.length);
 				whiteAtBottom(instruc);
 				console.log(instruc);
-				for(h = 0; h < instruc.length; h++)
-				{
-					convertInstruction(instruc[h], ins);
-					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
-				}
 			});
 			document.getElementById("whiteCorners").addEventListener("click", function step1()
 			{
-				instruc.splice(0, instruc.length);
 				finishFace(instruc);
 				console.log(instruc);
-				for(h = 0; h < instruc.length; h++)
-				{
-					convertInstruction(instruc[h], ins);
-					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
-				}
 			});
 			document.getElementById("whiteStuck").addEventListener("click", function step1()
 			{
-				instruc.splice(0, instruc.length);
 				whiteStuck(instruc);
 				console.log(instruc);
-				for(h = 0; h < instruc.length; h++)
-				{
-					convertInstruction(instruc[h], ins);
-					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
-				}
 			});
 			document.getElementById("leftCenter").addEventListener("click", function step1()
 			{
-				instruc.splice(0, instruc.length);
 				leftCenter(instruc);
 				console.log(instruc);
-				for(h = 0; h < instruc.length; h++)
-				{
-					convertInstruction(instruc[h], ins);
-					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
-				}
 			});
 			document.getElementById("rightCenter").addEventListener("click", function step1()
 			{
-				instruc.splice(0, instruc.length);
 				rightCenter(instruc);
 				console.log(instruc);
-				for(h = 0; h < instruc.length; h++)
-				{
-					convertInstruction(instruc[h], ins);
-					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
-				}
 			});
 			document.getElementById("yellowCross").addEventListener("click", function step1()
 			{
-				instruc.splice(0, instruc.length);
 				yellowCross(instruc);
 				console.log(instruc);
-				for(h = 0; h < instruc.length; h++)
-				{
-					convertInstruction(instruc[h], ins);
-					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
-				}
 			});
 			document.getElementById("swapEdges").addEventListener("click", function step1()
 			{
-				instruc.splice(0, instruc.length);
 				swapEdges(instruc);
 				console.log(instruc);
-				for(h = 0; h < instruc.length; h++)
-				{
-					convertInstruction(instruc[h], ins);
-					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
-				}
 			});
 			document.getElementById("cycleCorners").addEventListener("click", function step1()
 			{
-				instruc.splice(0, instruc.length);
 				cycleCorners(instruc);
 				console.log(instruc);
-				for(h = 0; h < instruc.length; h++)
-				{
-					convertInstruction(instruc[h], ins);
-					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
-				}
 			});
 			document.getElementById("orientCorners").addEventListener("click", function step1()
 			{
-				instruc.splice(0, instruc.length);
 				orientCorners(instruc);
 				console.log(instruc);
-				for(h = 0; h < instruc.length; h++)
-				{
-					convertInstruction(instruc[h], ins);
-					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
-				}
 			});
 			document.getElementById("flipu").addEventListener("click", function step1()
 			{
-				convertInstruction("flipu", ins);
-				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
+				instruc.push("flipu");
 			});
 			document.getElementById("flipr").addEventListener("click", function step1()
 			{
-				convertInstruction("flipr", ins);
-				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
+				instruc.push("flipr");
 			});
 			document.getElementById("flipl").addEventListener("click", function step1()
 			{
-				convertInstruction("flipl", ins);
-				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
+				instruc.push("flipl");
 			});
 			document.getElementById("flips").addEventListener("click", function step7()
 			{
-				convertInstruction("flips", ins);
-				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
+				instruc.push("flips");
 			});
 			document.getElementById("center").addEventListener("click", function step1()
 			{
@@ -375,65 +324,52 @@
 			});
 			document.getElementById("rcw").addEventListener("click", function step1()
 			{
-				convertInstruction("rcw", ins);
-				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
+				instruc.push("rcw");
 			});
 			document.getElementById("rcc").addEventListener("click", function step1()
 			{
-				convertInstruction("rcc", ins);
-				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
+				instruc.push("rcc");
 			});
 			document.getElementById("lcw").addEventListener("click", function step1()
 			{
-				convertInstruction("lcw", ins);
-				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
+				instruc.push("lcw");
 			});
 			document.getElementById("lcc").addEventListener("click", function step1()
 			{
-				convertInstruction("lcc", ins);
-				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
+				instruc.push("lcc");
 			});
 			document.getElementById("ucw").addEventListener("click", function step1()
 			{
-				convertInstruction("ucw", ins);
-				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
+				instruc.push("ucw");
 			});
 			document.getElementById("ucc").addEventListener("click", function step1()
 			{
-				convertInstruction("ucc", ins);
-				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
+				instruc.push("ucc");
 			});
 			document.getElementById("dcw").addEventListener("click", function step1()
 			{
-				convertInstruction("dcw", ins);
-				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
+				instruc.push("dcw");
 			});
 			document.getElementById("dcc").addEventListener("click", function step1()
 			{
-				convertInstruction("dcc", ins);
-				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
+				instruc.push("dcc");
 			});
 			document.getElementById("fcw").addEventListener("click", function step1()
 			{
-				convertInstruction("fcw", ins);
-				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
+				instruc.push("fcw");
 			});
 			document.getElementById("fcc").addEventListener("click", function step1()
 			{
-				convertInstruction("fcc", ins);
-				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
+				instruc.push("fcc");
 			});
 			document.getElementById("bcw").addEventListener("click", function step1()
 			{
-				convertInstruction("bcw", ins);
-				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
+				instruc.push("bcw");
 			});
 			document.getElementById("bcc").addEventListener("click", function step1()
 			{
-				convertInstruction("bcc", ins);
-				rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI / 2, ins[1]);
+				instruc.push("bcc");
 			});
-			//console.log(button);
 			
 			function step2()
 			{
@@ -450,6 +386,46 @@
 			{
 				requestAnimationFrame(render); 
 				renderer.render( scene, camera );
+				
+				if(!applyingAngle)
+				{
+					if(instruc.length !== 0)
+					{
+						console.log(instruc);
+						currentCommand = instruc.shift();
+						console.log(instruc);
+						if(currentCommand[0] == 2 || currentCommand[0] == 3)
+						{
+							curAngle = (Math.PI / 2) / y;
+							for(i = 0; i < y; i++)
+							{
+								angleQueue.push(curAngle);
+							}
+						}
+						else
+						{
+							curAngle = (Math.PI / 2) / xz;
+							for(i = 0; i < xz; i++)
+							{
+								angleQueue.push(curAngle);
+							}
+						}
+					}
+					applyingAngle = true;
+				}
+				else
+				{
+					if(angleQueue.length > 0)
+					{
+						convertInstruction(currentCommand, ins);
+						rotateCube(ins[2], cube, axis[ins[0]], scene, angleQueue.shift(), ins[1], edges);
+					}
+					else
+					{
+						currentCommand = [];
+						applyingAngle = false;
+					}
+				}
 			};
 				
 			//controls
