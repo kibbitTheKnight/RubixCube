@@ -12,13 +12,6 @@
 			const safeNum = 0.5;
 			var turns = [];
 			turns.push(new Array(6));
-			//console.log(cube);
-			turns[4] = [8, 17, 26, 5, 14, 23, 2, 11, 20]; //front, green face
-			turns[5] = [24, 15, 6, 21, 12, 3, 18, 9, 0]; //back, blue face
-			turns[0] = [6, 7, 8, 3, 4, 5, 0, 1, 2]; //left, orange face
-			turns[1] = [26, 25 ,24, 23, 22, 21, 20, 19, 18]; //right, red face
-			turns[2] = [24, 25, 26, 15, 16, 17, 6, 7, 8]; //up, white face
-			turns[3] = [0, 1, 2, 9, 10, 11, 18, 19, 20]; //down, yellow face
 			
 			var specificCubes = [];
 			
@@ -141,6 +134,8 @@
 						cube.position.x = (x - 1) * position;
 						cube.position.y = (y - 1) * position;
 						cube.position.z = (z - 1) * position;
+						cube.castShadow = true;
+						cube.receiveShadow = true;
 						
 						var edge = new THREE.EdgesGeometry( cubeGeometry );
 						var line = new THREE.LineSegments( edge, new THREE.LineBasicMaterial( { color: 0x000000, linewidth: 1 } ) );
@@ -172,13 +167,13 @@
 			renderer.setSize( window.innerWidth * 2 / 3, window.innerHeight * 2 / 3);
 			document.getElementById("canvas").appendChild( renderer.domElement);
 			renderer.setClearColor (0x8dc8e0, 1);
+			renderer.shadowMap.enabled = true;
 			
 			//create scene and camera
 			let scene = new THREE.Scene();
 			let aspect = window.innerWidth/window.innerHeight;
 			let camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 100 );
 			camera.position.z= 6;
-			console.log(camera);
 			scene.add(camera);
 			
 			let defaultCamera = camera.clone();
