@@ -164,7 +164,7 @@
 		{
 			//create renderer
 			let renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth * 2 / 3, window.innerHeight * 2 / 3);
+			renderer.setSize( window.innerWidth * 1.6 / 3, window.innerHeight * 1.6 / 3);
 			document.getElementById("canvas").appendChild( renderer.domElement);
 			renderer.setClearColor (0x8dc8e0, 1);
 			renderer.shadowMap.enabled = true;
@@ -433,12 +433,14 @@
 		<h1 style="font-family:verdana; font-size: 30px;"> Keira Taylor and Ashley Smith</h1>
 		<div class = "wrapper" id = "canvas">
 		</div>
+		<div class="box-orange3">
 		<p>Manual Move Operations</p>
-		<div class = "wrapper">
+		</div>
+		<div class = "box-orange2">
 			<button type = "button" class = "button" onclick = "" id = "center"> Center Cube </button>
 		</div>
 		
-		<div class = "wrapper" id = "basicRotations">
+		<div class = "box-orange" id = "basicRotations">
 			<button type = "button" class = "button" onclick = "" id = "rcw"> R </button>
 			<button type = "button" class = "button" onclick = "" id = "rcc"> R' </button>
 			<button type = "button" class = "button" onclick = "" id = "lcw"> L </button>
@@ -453,27 +455,35 @@
 			<button type = "button" class = "button" onclick = "" id = "dcc"> D' </button>
 		</div>
 		
-		<div class = "wrapper" id = "flipMoves">
+		<div class = "box-orange4" id = "flipMoves">
 			<button type = "button" class = "button" onclick = "" id = "flipu"> Flip Upside Down </button>
 			<button type = "button" class = "button" onclick = "" id = "flipr"> Flip Right </button>
-			<button type = "button" class = "button" onclick = "" id = "flipl"> Flip Left </button>
-			<button type = "button" class = "button" onclick = "" id = "flips"> Flip Onto Side </button>
+
 		</div>
+		<div class = "box-orange5" id = "flipMoves">
+			<button type = "button" class = "button" onclick = "" id = "flips"> Flip Onto Side </button>
+			<button type = "button" class = "button" onclick = "" id = "flipl"> Flip Left </button>
+		</div>
+		<div class="box-layer1Text">
 		<p>Solving Layer 1</p>
-		<div class = "wrapper" id = "firstLayer">
+		</div>
+		<div class = "box-layer1" id = "firstLayer">
 			<button type = "button" class = "button" onclick = "" id = "whiteDown"> White Side Facing Down </button>
 			<button type = "button" class = "button" onclick = "" id = "whiteAtBottom"> White At Bottom </button>
 			<button type = "button" class = "button" onclick = "" id = "whiteCorners"> White Corners </button>
 			<button type = "button" class = "button" onclick = "" id = "whiteStuck"> White Stuck </button>
 		</div>
+		<div class="box-layer2Text">
 		<p>Solving Layer 2</p>
-		<div class = "wrapper" id = "secondLayer">
+		</div>
+		<div class = "box-layer2" id = "secondLayer">
 			<button type = "button" class = "button" onclick = "" id = "leftCenter"> Left Cube </button>
 			<button type = "button" class = "button" onclick = "" id = "rightCenter"> Right Cube </button>
 		</div>
-		
+		<div class = "box-layer3Text">
 		<p>Solving Layer 3</p>
-		<div class = "wrapper" id = "thirdLayer">
+		</div>
+		<div class = "box-layer3" id = "thirdLayer">
 			<button type = "button" class = "button" onclick = "" id = "yellowCross"> Yellow Cross </button>
 			<button type = "button" class = "button" onclick = "" id = "swapEdges"> Swap Edges </button>
 			<button type = "button" class = "button" onclick = "" id = "cycleCorners"> Cycle Corners </button>

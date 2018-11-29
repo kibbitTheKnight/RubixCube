@@ -90,19 +90,232 @@ a:hover {
 	color: #fff;
 	border-bottom: 2px solid #fff;
 }
+{
+    box-sizing: border-box;
+}
+
+/* Create two equal columns that floats next to each other */
 .column {
     float: left;
     width: 50%;
-}
-
-/* Clear floats after the columns */
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
+    padding: 10px;
+    height: 300px; /* Should be removed. Only for demonstration */
 }
 
 .wrapper {
   display: flex;
   justify-content: center;
+}
+.wrapperStart {
+  display: flex;
+  justify-content: flex-start;
+  
+}
+.wrapperEnd {
+  display: flex;
+  justify-content: flex-end;
+  
+}
+.wrapper2 {
+  display: flex;
+  justify-content: center;
+  float: left;
+    width: 50%;
+    padding: 10px;
+  
+}
+.box-orange {
+  position: relative;  
+  background: none;
+  width: 500px;
+  height: 50px;
+  top: 0px;         
+  left: 5px;
+	right:500 px;
+	margin-left:auto;
+	margin-right:auto;
+  justify-content:center;
+}
+.box-orange2 {
+  position: relative;  
+  background: none;
+  width: 300px;
+  height: 50px;
+  top: 0px;         
+  left: 50px;
+	right:600 px;
+	margin-left:auto;
+	margin-right:auto;
+  justify-content:center;
+}
+.box-orange3 {
+	color: #fff;
+
+	font-family: 'Cormorant Garamond';
+	font-size: 20px;
+	font-style: italic;
+	font-weight: 400;
+	line-height: 48px;
+  position: relative;  
+  background: none;
+  width: 300px;
+  height: 50px;
+  top: 0px;         
+  left: -25px;
+	right:600 px;
+	margin-left:auto;
+	margin-right:auto;
+  justify-content:center;
+}
+.box-orange4 {
+	color: #fff;
+
+	font-family: 'Cormorant Garamond';
+	font-size: 20px;
+	font-style: italic;
+	font-weight: 400;
+	line-height: 48px;
+  position: relative;  
+  background: none;
+  width: 300px;
+  height: 50px;
+  top: -58px;         
+  left: -300px;
+	right:400 px;
+	margin-left:auto;
+	margin-right:auto;
+  justify-content:center;
+}
+.box-orange5 {
+	color: #fff;
+
+	font-family: 'Cormorant Garamond';
+	font-size: 20px;
+	font-style: italic;
+	font-weight: 400;
+	line-height: 48px;
+  position: relative;  
+  background: none;
+  width: 200px;
+  height: 50px;
+  top: -107px;         
+  left: 350px;
+	right:600 px;
+	margin-left:auto;
+	margin-right:auto;
+  justify-content:center;
+}
+
+.box-left {
+
+  position: relative;  
+  background: none;
+  width: 300px;
+  height: 50px;
+  top: 0px;         
+  left: 30px;
+	right:50 px;
+	margin-left:auto;
+	margin-right:auto;
+  justify-content:center;
+}
+.box-layer1 {
+
+  position: relative;  
+  background: none;
+  width: 150px;
+  height: 50px;
+  top: -600px;         
+  left: -800px;
+	right:0 px;
+	margin-left:auto;
+	margin-right:auto;
+  justify-content:center;
+}
+.box-layer1Text {
+	color: #fff;
+
+	font-family: 'Cormorant Garamond';
+	font-size: 20px;
+	font-style: italic;
+	font-weight: 400;
+	line-height: 48px;
+  position: relative;  
+  background: none;
+  width: 150px;
+  height: 50px;
+  top: -600px;         
+  left: -800px;
+	right:0 px;
+	margin-left:auto;
+	margin-right:auto;
+  justify-content:center;
+}
+
+.box-layer3 {
+
+  position: relative;  
+  background: none;
+  width: 150px;
+  height: 50px;
+  top: -800px;         
+  left: 800px;
+	right:0 px;
+	margin-left:auto;
+	margin-right:auto;
+  justify-content:center;
+}
+
+.box-layer3Text {
+color: #fff;
+
+	font-family: 'Cormorant Garamond';
+	font-size: 20px;
+	font-style: italic;
+	font-weight: 400;
+	line-height: 48px;
+  position: relative;  
+  background: none;
+  width: 150px;
+  height: 50px;
+  top: -800px;         
+  left: 800px;
+	right:0 px;
+	margin-left:auto;
+	margin-right:auto;
+  justify-content:center;
+}
+
+.box-layer2Text {
+	color: #fff;
+
+	font-family: 'Cormorant Garamond';
+	font-size: 20px;
+	font-style: italic;
+	font-weight: 400;
+	line-height: 48px;
+  position: relative;  
+  background: none;
+  width: 300px;
+  height: 50px;
+  top: -170px;         
+  left: -30px;
+	right:0 px;
+	margin-left:auto;
+	margin-right:auto;
+  justify-content:center;
+}
+
+.box-layer2 {
+
+  position: relative;  
+  background: none;
+  width: 300px;
+  height: 50px;
+  top: -170px;         
+  left: 0px;
+	right:0 px;
+	margin-left:auto;
+	margin-right:auto;
+  justify-content:center;
 }
