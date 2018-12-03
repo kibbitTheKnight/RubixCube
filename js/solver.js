@@ -882,10 +882,19 @@ function winCondition(cube, step)
 	return true;
 }
 
+// * Below are the only relevant functions *
+
+
 //solving white face
+
+//takes the instruction and turns it into a series of numbers that rotateCube() in .html uses
+//instrNum[0] is the axis that the cubes need to turn on (look for the axes in .html)
+//instrNum[1] is whether the turn needs to be counterclockwise or not, according to how the cube rotates
+//this is why rcw is technically counterclockwise. Because it does rotate counterclockwise, when looking at the
+//world axis
+//instrNum[2] is the face that needs to turn (f, u, r, l, b, d)
 function convertInstruction(instruction, instrNum)
 {
-	//console.log(instruction);
 	switch(instruction)
 	{
 		case "fcw" : {instrNum[0] = 4; instrNum[1] = -1; instrNum[2] = 4; break;}
@@ -907,6 +916,7 @@ function convertInstruction(instruction, instrNum)
 	}
 }
 
+//not used
 function move(cube, move)
 {
 	switch(instruction)
@@ -929,6 +939,7 @@ function move(cube, move)
 	}
 }
 
+//not used
 function moveList(cube, moves)
 {
 	for(i = 0; i < moves.length; i++)
@@ -954,6 +965,8 @@ function moveList(cube, moves)
 	}
 }
 
+//these are just the all of the algorithms used to solve a rubik's cube. They push the correct moves onto instructions[]
+//and instructions acts like a queue, storing all the moves that need to happen
 function whiteFacingDown(instructions)
 {
 	instructions.push("fcw");
@@ -1054,6 +1067,7 @@ function copyArray(myarray)
 	return JSON.parse(JSON.stringify(myarray));
 }
 
+//scrambles the cube
 function scrambleCube(moves, amount)
 {
 	var instructions = [];

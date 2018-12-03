@@ -7,15 +7,22 @@
 	<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
 	<script src = "../js/solver.js" </script></script>
 	<script>
-	function rotateCube(face, cube, axis, scene, r, cc, edges)
+	//face = which side to turn, cube is the cube, axis is which axis to turn on, scene is the scene,
+	//r = the angle/amount to turn, cc = if the turn is counter clockwise or not. If it is, cc = -1, else cc = 1
+	//edges contains all the black lines surrounding the cubes, like a wireframe
+	function rotateCube(face, cube, axis, scene, r, cc, edges) 
 		{
+			//number sometimes comes out as -0.02 or 0.02, so this pretends those are 0
 			const safeNum = 0.5;
-			var turns = [];
-			turns.push(new Array(6));
 			
+			//creates an array to store all the cubes that will be rotated
 			var specificCubes = [];
 			
-			//var rotWorldMatrix;
+			//goes through the cube and puts any cubes that need to be rotated onto specificCubes[]
+			//if, for example, the cube needs the face turned, it'll find all the cubes that are postive on
+			//the z-axis. The cube is centered on (0, 0, 0), so any side can be categorized by whether it's
+			//+x, -x, +y, -y, etc.
+			//face refers to which side needs to turn. If it's not one of the if statements, that means the whole cube needs to turn
 			for(i = 0; i < cube.length; i++)
 			{
 				if(face == 1)
@@ -67,10 +74,14 @@
 				scene.remove(cube[i]);
 				scene.remove(edges[i]);
 			}
+			//makes the cube turn all the way upside down (180 degrees or Math.PI) instead of just 90 degrees (Math.PI/2)
 			if(face == 11) //rotate Math.PI to go upwards
 			{
 				r *= 2;
 			}
+			//performs rotations on both the cube and edges. First it translates the cubes, putting them into the correct
+			//spot without rotating them. Then it rotates them (on the world axis so the colors face the correct sides. 
+			//You can experiment with this by changing r to r/2 in either function to see what they do
 			for(i = 0; i < specificCubes.length; i++)
 			{
 				calcRotationAroundAxis(cube[specificCubes[i]], axis, (cc * r));	
@@ -86,7 +97,7 @@
 			
 		
 		}
-		
+		//translates the cube around an axis using Euler.
 		function calcRotationAroundAxis(cube, axis, angle)
 		{
 
@@ -108,6 +119,7 @@
 			}
 			cube.position.applyEuler(euler);
 		}
+		//rotates the cubes around the world axis (which is the same axis as the whole Rubik's cube because it's centered on (0, 0, 0)
 		function rotateAroundWorldAxis(cube, axis, rotate) 
 		{
 			let rotWorldMatrix = new THREE.Matrix4();
@@ -118,6 +130,9 @@
 			cube.matrix = rotWorldMatrix;
 			cube.setRotationFromMatrix(cube.matrix);
 		}
+		//creates the cubes. It's done basically how the javascript version with just numbers was done.
+		//only difference is that meshes were added instead of numbers, and the position of the cubes in
+		//relation to the axes had to be set
 		function createCubes(scene, materials, edges) 
 		{
 			var cubes = [];
@@ -222,11 +237,11 @@
 			var instruc = [];
 			var ins = new Array(3);
 			
-			//add axis for help in orienting
+			//add axis for help in orienting (the blue, red, and green lines on the screen)
 			var axesHelper = new THREE.AxesHelper( 3 );
 			scene.add( axesHelper );
 
-			//scramble cube
+			//scramble cube -- it's a function in the .js. Picks a random group of 20 moves and applies them to the cube
 			var moves = [];
 			scrambleCube(moves, 20);
 			
@@ -366,50 +381,51 @@
 				instruc.push("bcc");
 			});
 			
-			function step2()
-			{
-				whiteFacingDown(instruc);
-				for(h = 0; h < instruc.length; h++)
-				{
-					convertInstruction(jsCube, instruc[h], ins);
-					rotateCube(ins[2], cube, axis[ins[0]], scene, Math.PI/2, ins[1]);
-				}
-			}
-			
 			//animation function
 			function render()
 			{
 				requestAnimationFrame(render); 
 				renderer.render( scene, camera );
 				
+				//if not rotating
 				if(!applyingAngle)
 				{
+					//if there are instructions *to* rotate
 					if(instruc.length !== 0)
 					{
+						//get the current instruction
 						console.log(instruc);
 						currentCommand = instruc.shift();
 						console.log(instruc);
+						//if it needs to rotate on the y axis (because y for some reason
+						//only works when it's a different value from xz)
 						if(currentCommand[0] == 2 || currentCommand[0] == 3)
 						{
+							//add around 60 different commands to rotate so that it can rotate at each step
+							//and look like it's actively turning. In reality, it's like a stop-motion movie
 							curAngle = (Math.PI / 2) / y;
 							for(i = 0; i < y; i++)
 							{
+								//add this angle to the queue that will tell it to rotate
 								angleQueue.push(curAngle);
 							}
 						}
-						else
+						else //it needs to rotate on x or z
 						{
 							curAngle = (Math.PI / 2) / xz;
 							for(i = 0; i < xz; i++)
 							{
+								//add this angle to the queue that will tell it to rotate
 								angleQueue.push(curAngle);
 							}
 						}
 					}
+					//tell the renderer to now rotate the cube
 					applyingAngle = true;
 				}
 				else
 				{
+					//if there are cubes to rotate, perform the rotation
 					if(angleQueue.length > 0)
 					{
 						convertInstruction(currentCommand, ins);
@@ -417,7 +433,9 @@
 					}
 					else
 					{
+						//clear the queue
 						currentCommand = [];
+						//tell the renderer not to rotate
 						applyingAngle = false;
 					}
 				}
